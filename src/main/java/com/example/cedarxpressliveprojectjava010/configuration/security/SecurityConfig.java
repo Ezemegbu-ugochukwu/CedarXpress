@@ -1,8 +1,8 @@
 package com.example.cedarxpressliveprojectjava010.configuration.security;
 
-import com.liveProject.liveProject.configuration.jwt.JWTAuthenticationFilter;
-import com.liveProject.liveProject.configuration.jwt.JwtAuthenticationEntryPoint;
-import com.liveProject.liveProject.service.CustomUserDetailService;
+import com.example.cedarxpressliveprojectjava010.configuration.jwt.JWTAuthenticationFilter;
+import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtAuthenticationEntryPoint;
+import com.example.cedarxpressliveprojectjava010.services.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
