@@ -48,9 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
-                .antMatchers("/", "/forgot-password", "/reset-password/**").permitAll()
-                .anyRequest()
-                .authenticated();
+                .antMatchers("/", "/forgot-password", "/reset-password/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui/index.html#")
+                .permitAll();
+
     }
 
     @Bean
