@@ -1,8 +1,8 @@
 package com.example.cedarxpressliveprojectjava010.configuration.security;
 
-import com.liveProject.liveProject.configuration.jwt.JWTAuthenticationFilter;
-import com.liveProject.liveProject.configuration.jwt.JwtAuthenticationEntryPoint;
-import com.liveProject.liveProject.service.CustomUserDetailService;
+import com.example.cedarxpressliveprojectjava010.configuration.jwt.JWTAuthenticationFilter;
+import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtAuthenticationEntryPoint;
+import com.example.cedarxpressliveprojectjava010.services.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailService userDetailsService;
 
     @Autowired
-    JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/forgot-password", "/reset-password/**").permitAll()
                 .anyRequest()
                 .authenticated();
     }
