@@ -3,8 +3,6 @@ package com.example.cedarxpressliveprojectjava010.services.implementation;
 import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
 import com.example.cedarxpressliveprojectjava010.exception.IncorrectPasswordException;
-import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
-import com.example.cedarxpressliveprojectjava010.services.CustomUserDetailService;
 import com.example.cedarxpressliveprojectjava010.services.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Slf4j
 public class LoginServiceImpl implements LoginService {
-    private final UserRepository userRepository;
-    private final CustomUserDetailService userDetailService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final HttpServletResponse httpServletResponse;
@@ -35,11 +30,11 @@ public class LoginServiceImpl implements LoginService {
         String password = loginDTO.getPassword();
 
         log.info("Initiating authentication for " + email);
-        Authentication authToken = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password);
         Authentication authenticatedToken = authenticationManager.authenticate(authToken);
 
         if (!authenticatedToken.isAuthenticated()) {
-            log.error(email + " inputted an incorrect password!");
+            log.error(email + " Inputted an incorrect password!");
             throw new IncorrectPasswordException(incorrectPasswordMessage);
         }
 
@@ -50,14 +45,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     public void setUpJWT(Authentication authentication){
-        log.info("Setting up logi");
-        String jwtToken = jwtTokenProvider.generateToken(authentication);
-        httpServletResponse.addHeader("Authorization", jwtToken);
+        log.info("Setting up JWT");
+        String jwToken = jwtTokenProvider.generateToken(authentication);
+        httpServletResponse.addHeader("Authorization", jwToken);
+        log.info("JWT Created and stored in header");
     }
 
     @Override
     public void logOut(){
         log.info("Logging out!");
+        SecurityContextHolder.clearContext();
         httpServletResponse.reset();
     }
 }

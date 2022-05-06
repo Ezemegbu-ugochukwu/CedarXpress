@@ -39,6 +39,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if(token == null || !token.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            return;
         }
 
         Jws <Claims> claimsJws = tokenProvide.validateToken(token);

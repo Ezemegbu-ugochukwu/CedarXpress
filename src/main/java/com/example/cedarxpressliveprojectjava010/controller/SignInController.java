@@ -8,12 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
 @RequiredArgsConstructor
 public class SignInController {
     private final LoginService loginService;
 
-    @PostMapping()
+    @PostMapping("/login")
     public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO){
         Authentication auth = loginService.login(loginDTO);
         loginService.setUpJWT(auth);
