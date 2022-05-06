@@ -1,6 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.config.jwt;
 
-import com.liveProject.liveProject.service.CustomUserDetailService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +24,7 @@ import java.util.stream.Collectors;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider tokenProvide;
-    @Autowired
-    private CustomUserDetailService userDetailService;
-
+    private JwtTokenProvider tokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,9 +35,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         if(token == null || !token.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            return;
         }
 
-        Jws <Claims> claimsJws = tokenProvide.validateToken(token);
+        Jws<Claims> claimsJws = tokenProvider.validateToken(token);
         Claims claims = claimsJws.getBody();
         String email = claims.getSubject();
         Set<GrantedAuthority> grantedAuthorities = getGrantedAuthoritiesFromClaims(claims);
