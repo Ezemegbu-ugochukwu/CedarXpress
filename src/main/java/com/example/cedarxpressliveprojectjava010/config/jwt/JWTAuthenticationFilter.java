@@ -1,5 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.config.jwt;
-
+import com.example.cedarxpressliveprojectjava010.service.CustomUserDetailService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         Jws<Claims> claimsJws = tokenProvider.validateToken(token);
         Claims claims = claimsJws.getBody();
         String email = claims.getSubject();
