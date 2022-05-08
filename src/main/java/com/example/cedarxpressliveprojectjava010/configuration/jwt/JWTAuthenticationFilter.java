@@ -1,5 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.configuration.jwt;
 
+import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsException;
+import com.example.cedarxpressliveprojectjava010.services.BlacklistService;
 import com.example.cedarxpressliveprojectjava010.services.CustomUserDetailService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -9,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,8 +30,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenProvider tokenProvide;
     @Autowired
-    private CustomUserDetailService userDetailService;
-
+    private UserDetailsService userDetailService;
+    @Autowired
+    BlacklistService blacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -37,10 +41,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getJwtFromRequest(request);
 
-        if(token == null || !token.startsWith("Bearer ")) {
+        if(token == null) {
             filterChain.doFilter(request, response);
             return;
         }
+
+        if (blacklistService.isTokenBlackListed(token)){
+            throw new BadCredentialsException("Token provided is blacklisted!");
+        }
+
 
         Jws <Claims> claimsJws = tokenProvide.validateToken(token);
         Claims claims = claimsJws.getBody();
@@ -60,7 +69,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
          if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
-             return bearerToken.substring(7 , bearerToken.length());
+             return bearerToken.substring(7);
          }
          return null;
     }

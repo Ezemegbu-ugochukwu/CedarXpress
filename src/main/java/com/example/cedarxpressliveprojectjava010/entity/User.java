@@ -36,7 +36,7 @@ public class User extends Base{
 
 
     @Enumerated(EnumType.STRING)
-    private String role;
+    private Role role;
 
 
 }

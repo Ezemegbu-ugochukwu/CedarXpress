@@ -45,4 +45,10 @@ public class JwtTokenProvider {
         }
         return claimsJWS;
     }
+
+    public Date getExpiryDate (String token){
+        Jws<Claims>  claimsJws = validateToken(token);
+        Claims claims = claimsJws.getBody();
+        return claims.getExpiration();
+    }
 }
