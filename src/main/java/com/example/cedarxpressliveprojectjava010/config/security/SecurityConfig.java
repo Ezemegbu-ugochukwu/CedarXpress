@@ -3,7 +3,6 @@ package com.example.cedarxpressliveprojectjava010.config.security;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JWTAuthenticationFilter;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -52,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
                 .antMatchers("/", "cerderXpress/user/register", "/forgot-password", "/reset-password/**", "/swagger-ui/**",
-                        "/swagger-ui/index.html#")
+                        "/swagger-properties/**", "/swagger-ui/index.html#")
                 .permitAll();
 
     }

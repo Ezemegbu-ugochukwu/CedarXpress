@@ -1,5 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.config.jwt;
-import com.example.cedarxpressliveprojectjava010.service.CustomUserDetailService;
+
+import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsException;
+import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,10 +24,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+    @Autowired
+    private UserDetailsService userDetailService;
+    @Autowired
+    BlacklistService blacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,11 +41,17 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getJwtFromRequest(request);
 
-        if(token == null || !token.startsWith("Bearer ")) {
+        if(token == null) {
             filterChain.doFilter(request, response);
             return;
         }
-        Jws<Claims> claimsJws = tokenProvider.validateToken(token);
+
+        if (blacklistService.isTokenBlackListed(token)){
+            throw new BadCredentialsException("Token provided is blacklisted!");
+        }
+
+
+        Jws <Claims> claimsJws = tokenProvider.validateToken(token);
         Claims claims = claimsJws.getBody();
         String email = claims.getSubject();
         Set<GrantedAuthority> grantedAuthorities = getGrantedAuthoritiesFromClaims(claims);
@@ -54,10 +68,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
-         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
-             return bearerToken.substring(7 , bearerToken.length());
-         }
-         return null;
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
     private Set<GrantedAuthority>  getGrantedAuthoritiesFromClaims(Claims claim){

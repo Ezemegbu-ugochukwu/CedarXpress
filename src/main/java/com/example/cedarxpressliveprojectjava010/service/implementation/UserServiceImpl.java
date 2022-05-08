@@ -1,4 +1,4 @@
-package com.example.cedarxpressliveprojectjava010.service.impl;
+package com.example.cedarxpressliveprojectjava010.service.implementation;
 
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
