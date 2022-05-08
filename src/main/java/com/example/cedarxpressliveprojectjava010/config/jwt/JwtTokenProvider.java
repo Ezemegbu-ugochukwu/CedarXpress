@@ -1,6 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.config.jwt;
 
-import com.example.cedarxpressliveprojectjava010.config.jwt.InvalidJwtTokenException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,14 +13,14 @@ public class JwtTokenProvider {
     @Value("${app.jwt-secret}")
     private String jwtSecret;
 
-    @Value("${app.jwt-expiration-milliseconds}")
-    private int JwtExpirationInMs;
+    @Value("${app.jwt-expiration-minutes}")
+    private int JwtExpirationInMn;
 
     // generate token
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
         Date currentDate = new Date();
-        Date expirationDate = new Date(currentDate.getTime() + JwtExpirationInMs);
+        Date expirationDate = new Date(currentDate.getTime() + JwtExpirationInMn * 60 * 1000);
 
         String token  = Jwts.builder()
                 .setSubject(username)

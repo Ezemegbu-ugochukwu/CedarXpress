@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider tokenProvide;
+    private JwtTokenProvider tokenProvider;
     @Autowired
     private UserDetailsService userDetailService;
     @Autowired
@@ -51,7 +51,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        Jws <Claims> claimsJws = tokenProvide.validateToken(token);
+        Jws <Claims> claimsJws = tokenProvider.validateToken(token);
         Claims claims = claimsJws.getBody();
         String email = claims.getSubject();
         Set<GrantedAuthority> grantedAuthorities = getGrantedAuthoritiesFromClaims(claims);
