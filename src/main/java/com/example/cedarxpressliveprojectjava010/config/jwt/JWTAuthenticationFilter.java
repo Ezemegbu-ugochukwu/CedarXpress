@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
@@ -46,9 +46,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (blacklistService.isTokenBlackListed(token)){
-            throw new BadCredentialsException("Token provided is blacklisted!");
-        }
+//        if (blacklistService.isTokenBlackListed(token)){
+//            throw new BadCredentialsException("Token provided is blacklisted!");
+//        }
 
 
         Jws <Claims> claimsJws = tokenProvider.validateToken(token);

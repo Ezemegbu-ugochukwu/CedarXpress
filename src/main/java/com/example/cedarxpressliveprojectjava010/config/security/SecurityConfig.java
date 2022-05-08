@@ -3,7 +3,9 @@ package com.example.cedarxpressliveprojectjava010.config.security;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JWTAuthenticationFilter;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,11 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder);
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,13 +47,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterAfter(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
                 .antMatchers("/", "cerderXpress/user/register", "/forgot-password", "/reset-password/**", "/swagger-ui/**",
                         "/swagger-properties/**", "/swagger-ui/index.html#")
                 .permitAll();
+    }
 
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter(){
+        return new JWTAuthenticationFilter();
     }
 }
