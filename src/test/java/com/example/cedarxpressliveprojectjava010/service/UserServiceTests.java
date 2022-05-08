@@ -3,7 +3,7 @@ package com.example.cedarxpressliveprojectjava010.service;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
-import com.example.cedarxpressliveprojectjava010.service.impl.UserServiceImpl;
+import com.example.cedarxpressliveprojectjava010.service.implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -94,7 +92,6 @@ public class UserServiceTests {
         Throwable thrown = catchThrowable(()-> userService.registerUser(registrationDto));
         assertThat(thrown).isInstanceOf(RuntimeException.class)
                 .hasMessage("Passwords do not match");
-
     }
 
 }

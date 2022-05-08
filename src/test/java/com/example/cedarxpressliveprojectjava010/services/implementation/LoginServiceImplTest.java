@@ -1,8 +1,10 @@
 package com.example.cedarxpressliveprojectjava010.services.implementation;
 
-import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtTokenProvider;
+import com.example.cedarxpressliveprojectjava010.config.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
 import com.example.cedarxpressliveprojectjava010.exception.IncorrectPasswordException;
+import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
+import com.example.cedarxpressliveprojectjava010.service.implementation.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Date;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -29,8 +34,10 @@ import static org.mockito.Mockito.verify;
 class LoginServiceImplTest {
     @Mock private AuthenticationManager authenticationManager;
     @Mock private JwtTokenProvider jwtTokenProvider;
+    @Mock private HttpServletRequest httpServletRequest;
     @Mock private HttpServletResponse httpServletResponse;
     @Mock private SecurityContextHolder securityContextHolder;
+    @Mock private BlacklistService blacklistService;
 
     @InjectMocks
     private LoginServiceImpl loginService;
@@ -79,10 +86,26 @@ class LoginServiceImplTest {
         verify(httpServletResponse, times(1)).addHeader("Authorization", "Bearer 123.ABC.&&&");
     }
 
-    @DisplayName("Log-Out method should store jwt in header")
+    @DisplayName("Log-Out method should add JWT to blacklist")
     @Test
     public void shouldCallNecessaryMethods() {
+        /**
+         *  String token = httpServletRequest.getHeader("Authorization").substring(7);
+         *         Date expiryDate = jwtTokenProvider.getExpiryDate(token);
+         *         blacklistService.blackListToken(token, expiryDate);
+         *         SecurityContextHolder.clearContext();
+         *         httpServletResponse.reset();
+         */
+        Date date = new Date();
+        given(httpServletRequest.getHeader("Authorization")).willReturn("Bearer 123.ABC.&&&");
+        given(jwtTokenProvider.getExpiryDate("123.ABC.&&&")).willReturn(date);
+
+
         loginService.logOut();
+
+        verify(httpServletRequest, times(1)).getHeader("Authorization");
+        verify(jwtTokenProvider, times(1)).getExpiryDate("123.ABC.&&&");
+        verify(blacklistService, times(1)).blackListToken("123.ABC.&&&", date);
         verify(httpServletResponse, times(1)).reset();
     }
 }

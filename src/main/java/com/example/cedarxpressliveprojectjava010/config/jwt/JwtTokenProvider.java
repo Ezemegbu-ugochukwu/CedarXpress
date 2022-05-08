@@ -1,8 +1,8 @@
 package com.example.cedarxpressliveprojectjava010.config.jwt;
 
+import com.example.cedarxpressliveprojectjava010.config.jwt.InvalidJwtTokenException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -14,14 +14,14 @@ public class JwtTokenProvider {
     @Value("${app.jwt-secret}")
     private String jwtSecret;
 
-    @Value("${app.jwt-expiration-minutes}")
-    private int JwtExpirationInMm;
+    @Value("${app.jwt-expiration-milliseconds}")
+    private int JwtExpirationInMs;
 
     // generate token
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
         Date currentDate = new Date();
-        Date expirationDate = new Date(currentDate.getTime() + JwtExpirationInMm*60*1000);
+        Date expirationDate = new Date(currentDate.getTime() + JwtExpirationInMs);
 
         String token  = Jwts.builder()
                 .setSubject(username)
@@ -37,13 +37,19 @@ public class JwtTokenProvider {
     public Jws<Claims> validateToken (String token){
         Jws<Claims> claimsJWS;
         try {
-        claimsJWS = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token);
+            claimsJWS = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token);
 
         }catch (SignatureException ex){
             throw  new InvalidJwtTokenException(HttpStatus.BAD_REQUEST, "invalid jwt token");
         }
         return claimsJWS;
+    }
+
+    public Date getExpiryDate (String token){
+        Jws<Claims>  claimsJws = validateToken(token);
+        Claims claims = claimsJws.getBody();
+        return claims.getExpiration();
     }
 }

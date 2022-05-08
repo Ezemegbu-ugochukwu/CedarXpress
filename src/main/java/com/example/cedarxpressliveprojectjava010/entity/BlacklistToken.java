@@ -14,7 +14,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class BlacklistToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

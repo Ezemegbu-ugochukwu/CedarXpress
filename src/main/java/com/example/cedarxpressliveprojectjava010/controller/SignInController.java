@@ -1,7 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
-import com.example.cedarxpressliveprojectjava010.services.LoginService;
+import com.example.cedarxpressliveprojectjava010.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

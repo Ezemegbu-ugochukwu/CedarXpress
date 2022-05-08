@@ -1,8 +1,8 @@
-package com.example.cedarxpressliveprojectjava010.services.implementation;
+package com.example.cedarxpressliveprojectjava010.service.implementation;
 
 import com.example.cedarxpressliveprojectjava010.entity.BlacklistToken;
 import com.example.cedarxpressliveprojectjava010.repository.BlacklistRepository;
-import com.example.cedarxpressliveprojectjava010.services.BlacklistService;
+import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

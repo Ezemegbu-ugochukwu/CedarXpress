@@ -1,10 +1,10 @@
-package com.example.cedarxpressliveprojectjava010.services.implementation;
+package com.example.cedarxpressliveprojectjava010.service.implementation;
 
-import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtTokenProvider;
+import com.example.cedarxpressliveprojectjava010.config.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
 import com.example.cedarxpressliveprojectjava010.exception.IncorrectPasswordException;
-import com.example.cedarxpressliveprojectjava010.services.BlacklistService;
-import com.example.cedarxpressliveprojectjava010.services.LoginService;
+import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
+import com.example.cedarxpressliveprojectjava010.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

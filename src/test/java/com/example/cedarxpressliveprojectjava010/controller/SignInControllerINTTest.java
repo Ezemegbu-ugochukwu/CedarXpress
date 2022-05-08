@@ -1,7 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
-import com.example.cedarxpressliveprojectjava010.services.LoginService;
+import com.example.cedarxpressliveprojectjava010.service.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
