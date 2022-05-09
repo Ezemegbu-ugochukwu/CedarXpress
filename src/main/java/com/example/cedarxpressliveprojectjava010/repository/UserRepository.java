@@ -2,11 +2,12 @@ package com.example.cedarxpressliveprojectjava010.repository;
 
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByEmail(String email);
+    boolean existsByEmail(String email);
 }

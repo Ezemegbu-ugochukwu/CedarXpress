@@ -1,14 +1,17 @@
-package com.example.cedarxpressliveprojectjava010.configuration.jwt;
+package com.example.cedarxpressliveprojectjava010.config.jwt;
 
-import com.example.cedarxpressliveprojectjava010.services.CustomUserDetailService;
+import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsException;
+import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,13 +25,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Configuration
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider tokenProvide;
+    private JwtTokenProvider tokenProvider;
     @Autowired
-    private CustomUserDetailService userDetailService;
-
+    private UserDetailsService userDetailService;
+    @Autowired
+    BlacklistService blacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -37,12 +42,20 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getJwtFromRequest(request);
 
-        if(token == null || !token.startsWith("Bearer ")) {
+        if(token == null) {
             filterChain.doFilter(request, response);
             return;
+<<<<<<< HEAD:src/main/java/com/example/cedarxpressliveprojectjava010/configuration/jwt/JWTAuthenticationFilter.java
+=======
         }
 
-        Jws <Claims> claimsJws = tokenProvide.validateToken(token);
+        if (blacklistService.isTokenBlackListed(token)){
+            throw new BadCredentialsException("Token provided is blacklisted!");
+>>>>>>> ab124673183690aa3bb61e6fb4e24cc62508054b:src/main/java/com/example/cedarxpressliveprojectjava010/config/jwt/JWTAuthenticationFilter.java
+        }
+
+
+        Jws <Claims> claimsJws = tokenProvider.validateToken(token);
         Claims claims = claimsJws.getBody();
         String email = claims.getSubject();
         Set<GrantedAuthority> grantedAuthorities = getGrantedAuthoritiesFromClaims(claims);
@@ -59,10 +72,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
-         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
-             return bearerToken.substring(7 , bearerToken.length());
-         }
-         return null;
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
     private Set<GrantedAuthority>  getGrantedAuthoritiesFromClaims(Claims claim){

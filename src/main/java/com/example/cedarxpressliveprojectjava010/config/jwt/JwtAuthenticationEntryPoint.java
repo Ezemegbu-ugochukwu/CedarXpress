@@ -1,4 +1,4 @@
-package com.example.cedarxpressliveprojectjava010.configuration.jwt;
+package com.example.cedarxpressliveprojectjava010.config.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

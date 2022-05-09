@@ -1,4 +1,4 @@
-package com.example.cedarxpressliveprojectjava010.services;
+package com.example.cedarxpressliveprojectjava010.service;
 
 import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;

@@ -1,14 +1,13 @@
-package com.example.cedarxpressliveprojectjava010.services.implementation;
+package com.example.cedarxpressliveprojectjava010.service.implementation;
 
-import com.example.cedarxpressliveprojectjava010.configuration.jwt.JwtTokenProvider;
+import com.example.cedarxpressliveprojectjava010.config.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;
 import com.example.cedarxpressliveprojectjava010.dto.request.ResetPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
-import com.example.cedarxpressliveprojectjava010.services.UserManagementService;
+import com.example.cedarxpressliveprojectjava010.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

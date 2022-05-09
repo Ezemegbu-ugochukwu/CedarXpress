@@ -3,7 +3,7 @@ package com.example.cedarxpressliveprojectjava010.controller;
 import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;
 import com.example.cedarxpressliveprojectjava010.dto.request.ResetPasswordRequest;
-import com.example.cedarxpressliveprojectjava010.services.UserManagementService;
+import com.example.cedarxpressliveprojectjava010.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
