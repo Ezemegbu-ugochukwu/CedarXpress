@@ -6,6 +6,7 @@ import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordReque
 import com.example.cedarxpressliveprojectjava010.dto.request.ResetPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;
 import com.example.cedarxpressliveprojectjava010.entity.User;
+import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.service.UserManagementService;
 import lombok.RequiredArgsConstructor;

@@ -45,13 +45,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if(token == null) {
             filterChain.doFilter(request, response);
             return;
-<<<<<<< HEAD:src/main/java/com/example/cedarxpressliveprojectjava010/configuration/jwt/JWTAuthenticationFilter.java
-=======
         }
 
         if (blacklistService.isTokenBlackListed(token)){
             throw new BadCredentialsException("Token provided is blacklisted!");
->>>>>>> ab124673183690aa3bb61e6fb4e24cc62508054b:src/main/java/com/example/cedarxpressliveprojectjava010/config/jwt/JWTAuthenticationFilter.java
         }
 
 
