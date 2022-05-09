@@ -46,9 +46,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-//        if (blacklistService.isTokenBlackListed(token)){
-//            throw new BadCredentialsException("Token provided is blacklisted!");
-//        }
+        if (blacklistService.isTokenBlackListed(token)){
+            throw new BadCredentialsException("Token provided is blacklisted!");
+        }
 
 
         Jws <Claims> claimsJws = tokenProvider.validateToken(token);

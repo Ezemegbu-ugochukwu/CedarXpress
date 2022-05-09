@@ -30,11 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,8 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
-                .antMatchers("/", "cerderXpress/user/register", "/forgot-password", "/reset-password/**", "/swagger-ui/**",
-                        "/swagger-properties/**", "/swagger-ui/index.html#")
+                .antMatchers("/", "cerderXpress/user/register", "/forgot-password",
+                        "/reset-password/**", "/login", "home", "/swagger-ui/**",
+                        "/swagger-resources/**", "/swagger-ui/index.html#")
                 .permitAll();
     }
 
