@@ -70,7 +70,6 @@ public class UserManagementServiceImpl implements UserManagementService {
         emailSenderService.send(emailSenderDto);
 
         log.info(forgotPasswordURL);
-        // send mail method;
         return ResponseEntity.ok(new MessageResponse("Kindly check email for reset Link!"));
     }
 

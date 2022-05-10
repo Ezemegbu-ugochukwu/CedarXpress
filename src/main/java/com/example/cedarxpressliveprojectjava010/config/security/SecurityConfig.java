@@ -2,6 +2,7 @@ package com.example.cedarxpressliveprojectjava010.config.security;
 
 import com.example.cedarxpressliveprojectjava010.config.jwt.JWTAuthenticationFilter;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JwtAuthenticationEntryPoint;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,19 +19,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Autowired
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
 
     @Override

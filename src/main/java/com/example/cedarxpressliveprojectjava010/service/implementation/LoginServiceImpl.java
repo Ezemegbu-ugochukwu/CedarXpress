@@ -27,8 +27,6 @@ public class LoginServiceImpl implements LoginService {
     private final HttpServletRequest httpServletRequest;
     private final BlacklistService blacklistService;
 
-    private String incorrectPasswordMessage = "The password you inputted is incorrect!";
-
     @Override
     public Authentication login(LoginDTO loginDTO) {
         String email = loginDTO.getEmail();
@@ -40,7 +38,8 @@ public class LoginServiceImpl implements LoginService {
 
         if (!authenticatedToken.isAuthenticated()) {
             log.error(email + " Inputted an incorrect password!");
-            throw new IncorrectPasswordException(incorrectPasswordMessage);
+            String INCORRECT_PASSWORD_MESSAGE = "The password you inputted is incorrect!";
+            throw new IncorrectPasswordException(INCORRECT_PASSWORD_MESSAGE);
         }
 
         SecurityContextHolder.getContext().setAuthentication(authenticatedToken);

@@ -7,6 +7,7 @@ import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
+import com.example.cedarxpressliveprojectjava010.service.EmailSenderService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ class UserManagementServiceImplTest {
     @Mock
     private JwtTokenProvider jwtTokenProvider;
 
+    @Mock
+    private EmailSenderService emailSenderService;
+
     @InjectMocks
     private UserManagementServiceImpl userManagementService;
 
@@ -56,7 +60,7 @@ class UserManagementServiceImplTest {
 
     @Test
     void whenValidUserForgetsPassword_ShouldSendResetPasswordLink() throws MessagingException {
-        String jwtToken = "";
+        String jwtToken = "bejbvjubovjebovjeboj";
         //User user = new User();
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
@@ -73,6 +77,7 @@ class UserManagementServiceImplTest {
                 thenReturn(Optional.of(user));
 
         when(jwtTokenProvider.generateToken(authentication)).thenReturn(jwtToken);
+        when(emailSenderService.send(any())).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         ResponseEntity<MessageResponse> result = userManagementService.forgotPassword(forgotPasswordRequest);
 
         assertThat(result.getBody().getMessage()).isEqualTo("Kindly check email for reset Link!");

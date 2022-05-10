@@ -4,6 +4,7 @@ import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsExcepti
 import com.example.cedarxpressliveprojectjava010.service.BlacklistService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,13 +27,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
+@RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtTokenProvider tokenProvider;
-    @Autowired
     private UserDetailsService userDetailService;
-    @Autowired
     BlacklistService blacklistService;
 
     @Override

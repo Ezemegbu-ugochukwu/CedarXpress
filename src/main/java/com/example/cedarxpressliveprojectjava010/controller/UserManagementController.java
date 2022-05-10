@@ -22,7 +22,6 @@ public class UserManagementController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) throws MessagingException {
-        log.info("The witch");
         return userManagementService.forgotPassword(request);
     }
 

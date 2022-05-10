@@ -1,10 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.dto.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ForgotPasswordRequest {
     @NotBlank(message = "email is required!")
     private String email;
