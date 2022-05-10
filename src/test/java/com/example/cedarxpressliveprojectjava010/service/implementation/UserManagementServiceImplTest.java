@@ -3,6 +3,7 @@ package com.example.cedarxpressliveprojectjava010.service.implementation;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordRequest;
 import com.example.cedarxpressliveprojectjava010.dto.request.ResetPasswordRequest;
+import com.example.cedarxpressliveprojectjava010.dto.response.MessageResponse;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
@@ -14,11 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.mail.MessagingException;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -52,7 +55,7 @@ class UserManagementServiceImplTest {
     }
 
     @Test
-    void whenValidUserForgetsPassword_ShouldSendResetPasswordLink() {
+    void whenValidUserForgetsPassword_ShouldSendResetPasswordLink() throws MessagingException {
         String jwtToken = "";
         //User user = new User();
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -70,7 +73,7 @@ class UserManagementServiceImplTest {
                 thenReturn(Optional.of(user));
 
         when(jwtTokenProvider.generateToken(authentication)).thenReturn(jwtToken);
-        var result = userManagementService.forgotPassword(forgotPasswordRequest);
+        ResponseEntity<MessageResponse> result = userManagementService.forgotPassword(forgotPasswordRequest);
 
         assertThat(result.getBody().getMessage()).isEqualTo("Kindly check email for reset Link!");
         assertThat(forgotPasswordRequest.getEmail()).isEqualTo(user.getEmail());
@@ -103,7 +106,7 @@ class UserManagementServiceImplTest {
         );
         when(userRepository.findUserByEmail(request.getEmail())).thenReturn(Optional.of(user));
 
-        var response = userManagementService.resetPassword(jwtToken, request);
+        ResponseEntity<MessageResponse> response = userManagementService.resetPassword(jwtToken, request);
 
         verify(userRepository, times(1)).save(user);
         verify(passwordEncoder, times(1)).encode(request.getNewPassword());

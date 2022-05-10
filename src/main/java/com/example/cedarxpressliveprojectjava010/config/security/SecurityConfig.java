@@ -47,11 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("USER","ADMIN")
-                .antMatchers("/", "cerderXpress/user/register", "/forgot-password",
+                .antMatchers("/user").hasAnyRole("ROLE_CUSTOMER","ADMIN")
+                .antMatchers("/", "cerderXpress/user/register",
                         "/reset-password/**", "/login", "home", "/swagger-ui/**",
                         "/swagger-resources/**", "/swagger-ui/index.html#")
+                .permitAll()
+                .antMatchers("/forgot-password")
                 .permitAll();
+
     }
 
     @Bean
