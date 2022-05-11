@@ -3,14 +3,17 @@ package com.example.cedarxpressliveprojectjava010.controller;
 import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
 import com.example.cedarxpressliveprojectjava010.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SignInController {
+
     private final LoginService loginService;
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO){

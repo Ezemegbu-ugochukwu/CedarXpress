@@ -4,6 +4,9 @@ import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/cerderXpress/user")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
 

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.cedarxpressliveprojectjava010.enums.Role.ROLE_CUSTOMER;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
             registrationDto.setPassword(encodedPassword);
             User user = modelMapper.map(registrationDto,User.class);
+            user.setRole(ROLE_CUSTOMER);
             user = userRepository.save(user);
 
 
