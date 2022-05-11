@@ -1,5 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.service.implementation;
 
+import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,6 +52,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             registrationDto.setPassword(null);
 
             return new ResponseEntity<>(registrationDto,HttpStatus.CREATED);
+    }
+
+    @Override
+    public void editUserDetails(EditUserDetailsDto editUserDetailsDto) {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.getUserByEmail(loggedInEmail);
+        user.setFirstName(editUserDetailsDto.getFirstName());
+        user.setLastName(editUserDetailsDto.getLastName());
+        user.setDob(editUserDetailsDto.getDob());
+        user.setGender(editUserDetailsDto.getGender());
+
+        userRepository.save(user);
     }
 
     @Override

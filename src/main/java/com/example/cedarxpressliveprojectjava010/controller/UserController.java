@@ -1,14 +1,15 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
+import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<RegistrationDto> registerUser(@Valid @RequestBody RegistrationDto registrationDto){
         return userService.registerUser(registrationDto);
+    }
 
+    @PutMapping("/update/")
+    public ResponseEntity<String> editUserDetails(@RequestBody EditUserDetailsDto editUserDetailsDto){
+        userService.editUserDetails(editUserDetailsDto);
+        return new ResponseEntity<>(
+                "details updated", HttpStatus.OK
+        );
     }
 }
