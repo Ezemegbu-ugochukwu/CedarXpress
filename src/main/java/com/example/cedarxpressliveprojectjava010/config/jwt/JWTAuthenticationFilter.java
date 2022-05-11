@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    private JwtTokenProvider tokenProvider;
-    private UserDetailsService userDetailService;
+    private final JwtTokenProvider tokenProvider;
+    private final UserDetailsService userDetailService;
     BlacklistService blacklistService;
 
     @Override

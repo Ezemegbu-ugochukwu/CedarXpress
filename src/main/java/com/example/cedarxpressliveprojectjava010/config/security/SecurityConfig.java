@@ -22,9 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final UserDetailsService userDetailsService;
-
-//    private final PasswordEncoder passwordEncoder;
 
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 

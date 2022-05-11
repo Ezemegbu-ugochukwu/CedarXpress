@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@SpringBootApplication(scanBasePackages = "com.example.cedarxpressliveprojectjava010.*")
+@SpringBootApplication
 public class CedarXpressLiveprojectJava010Application {
 
     public static void main(String[] args) {
