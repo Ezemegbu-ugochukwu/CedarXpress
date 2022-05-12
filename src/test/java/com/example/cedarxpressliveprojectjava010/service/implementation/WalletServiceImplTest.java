@@ -54,9 +54,6 @@ class WalletServiceImplTest {
 
 
         wallet = new Wallet();
-//        wallet.setId(1L);
-//        wallet.setCreatedTime(LocalDateTime.now());
-//        wallet.setModifiedTime(LocalDateTime.now());
         wallet.setUser(User.builder()
                 .email("chinekeebube@gmail.com")
                 .role(Role.ROLE_CUSTOMER)
