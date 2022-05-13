@@ -10,5 +10,5 @@ import lombok.*;
 public class FundWalletRequest {
 
     private String email;
-    private double amount;
+    private BigDecimal amount;
 }
