@@ -2,7 +2,9 @@ package com.example.cedarxpressliveprojectjava010.service.implementation;
 
 import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
+import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
+import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +57,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public ResponseEntity<String> updatePassword(UpdatePasswordDto updatePasswordDto) {
+        String oldPassword = updatePasswordDto.getOldPassword();
+        String newPassword = updatePasswordDto.getNewPassword();
+        String confirmPassword = updatePasswordDto.getConfirmPassword();
+
+        if (!newPassword.equals(confirmPassword)) throw new BadCredentialsException("New password don't match!");
+        else if (oldPassword.equals(newPassword)) throw new BadCredentialsException("New password can't be same with old!");
+
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.getUsersByEmail(loggedInEmail);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) throw new BadCredentialsException("Old password incorrect!");
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user);
+
+        return new ResponseEntity<>("Password updated!", HttpStatus.ACCEPTED);
+    }
+
     public void editUserDetails(EditUserDetailsDto editUserDetailsDto) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -70,7 +91,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("user "+ email + "not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with email "+ email + " not found"));
 
         return new org.springframework.security.core.userdetails
                 .User(user.getEmail(), user.getPassword(),

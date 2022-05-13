@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetail,HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsEx(BadCredentialsException ex, WebRequest request){
+        ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetail,HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = {NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException e, WebRequest request){
         return handleException(e, request, HttpStatus.NOT_FOUND);
@@ -54,11 +60,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponse, httpStatus);
     }
-
-
-
-
-
-
-
 }

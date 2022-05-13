@@ -2,6 +2,7 @@ package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
+import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,5 +33,10 @@ public class UserController {
         return new ResponseEntity<>(
                 "details updated", HttpStatus.OK
         );
+    }
+
+    @PutMapping ("/update-password")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto){
+        return userService.updatePassword(updatePasswordDto);
     }
 }

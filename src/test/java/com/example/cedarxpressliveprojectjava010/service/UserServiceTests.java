@@ -2,7 +2,10 @@ package com.example.cedarxpressliveprojectjava010.service;
 
 import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
+import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
+import com.example.cedarxpressliveprojectjava010.enums.Role;
+import com.example.cedarxpressliveprojectjava010.exception.BadCredentialsException;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.service.implementation.UserServiceImpl;
@@ -20,15 +23,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import java.util.Optional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,15 +55,20 @@ public class UserServiceTests {
     RegistrationDto registrationDto;
     User user;
 
+    Authentication auth = Mockito.mock(Authentication.class);
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+
     @BeforeEach
     public void setup(){
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+      
         editUserDetailsDto = EditUserDetailsDto.builder()
                 .firstName("First")
                 .lastName("Success")
                 .gender(Gender.MALE)
                 .dob(LocalDate.now())
                 .build();
-
 
         registrationDto = RegistrationDto.builder()
                 .firstName("first")
@@ -73,6 +83,7 @@ public class UserServiceTests {
        user.setEmail("email");
        user.setPassword("1234");
        user.setLastName("last");
+       user.setRole(Role.ROLE_CUSTOMER);
        user.setFirstName("first");
 
     }
@@ -91,19 +102,16 @@ public class UserServiceTests {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(registrationDto);
-
     }
 
     @Test
     public void givenUserObject_whenCreatUser_thenThrowException(){
-
         given(userRepository.existsByEmail("email")).willReturn(true);
 
         Throwable thrown = catchThrowable(()-> userService.registerUser(registrationDto));
 
         assertThat(thrown).isInstanceOf(RuntimeException.class)
                 .hasMessage("User already exist");
-
     }
 
     @Test
@@ -113,6 +121,96 @@ public class UserServiceTests {
         assertThat(thrown).isInstanceOf(RuntimeException.class)
                 .hasMessage("Passwords do not match");
     }
+
+    @DisplayName("Test for different values for ConfirmPassword and New Password")
+    @Test
+    public void shouldThrowBadCredentialExceptionForInconsistentNewPassword(){
+        UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
+                        .newPassword("password").confirmPassword("inconsistent").oldPassword("12345")
+                        .build();
+        Throwable thrown = catchThrowable(() -> userService.updatePassword(updatePasswordDto));
+
+        assertThat(thrown).isInstanceOf(BadCredentialsException.class).hasMessage("New password don't match!");
+    }
+
+    @DisplayName("Test for Same values for Old and New Password")
+    @Test
+    public void shouldThrowBadCredentialExceptionForSameOldAndNewPasswordValues(){
+        UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
+                .newPassword("password").confirmPassword("password").oldPassword("password")
+                .build();
+        Throwable thrown = catchThrowable(() -> userService.updatePassword(updatePasswordDto));
+
+        assertThat(thrown).isInstanceOf(BadCredentialsException.class).hasMessage("New password can't be same with old!");
+    }
+
+    @DisplayName("Test for Same values for Old inputted By User and old password in database")
+    @Test
+    public void shouldThrowBadCredentialExceptionForDifferentOldPasswordValues(){
+        UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
+                .newPassword("12345").confirmPassword("12345").oldPassword("password")
+                .build();
+        String email = "damilola@gmail.com";
+        User user = User.builder()
+                        .firstName("Damilola")
+                        .lastName("Oluwole")
+                        .password("encrypted%%%%")
+                        .build();
+
+
+        given(auth.getName()).willReturn("damilola@gmail.com");
+        given(userRepository.getUsersByEmail(email)).willReturn(user);
+        given(passwordEncoder.matches(updatePasswordDto.getOldPassword(), user.getPassword())).willReturn(false);
+
+        Throwable thrown = catchThrowable(() -> userService.updatePassword(updatePasswordDto));
+
+        assertThat(thrown).isInstanceOf(BadCredentialsException.class).hasMessage("Old password incorrect!");
+    }
+
+    @DisplayName("Test for Successfully Updating password")
+    @Test
+    public void shouldThrowCallNecessaryMethods(){
+        UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
+                .newPassword("12345").confirmPassword("12345").oldPassword("password")
+                .build();
+        String email = "damilola@gmail.com";
+        User user = User.builder()
+                .firstName("Damilola")
+                .lastName("Oluwole")
+                .password("encrypted%%%%")
+                .build();
+
+
+        given(auth.getName()).willReturn("damilola@gmail.com");
+        given(userRepository.getUsersByEmail(email)).willReturn(user);
+        given(passwordEncoder.matches(updatePasswordDto.getOldPassword(), user.getPassword())).willReturn(true);
+
+        var response = userService.updatePassword(updatePasswordDto);
+
+        verify(userRepository, times(1)).save(user);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+        assertThat(response.getBody()).isEqualTo("Password updated!");
+
+    }
+
+    @DisplayName("Test for LoadUSerByUserName throwing error")
+    @Test
+    public void shouldThrowErrorIfUserNotFound(){
+        given(userRepository.findUserByEmail("damilola@gmail.com")).willReturn(Optional.empty());
+        Throwable thrown = catchThrowable(()->userService.loadUserByUsername("damilola@gmail.com"));
+        assertThat(thrown).isInstanceOf(UsernameNotFoundException.class).
+                hasMessage("User with email damilola@gmail.com not found");
+    }
+
+    @DisplayName("Test for LoadUSerByUserName should return Userdetails")
+    @Test
+    public void shouldThrowFindUserANdReturnUserDetails(){
+        given(userRepository.findUserByEmail("email")).willReturn(Optional.of(user));
+        var response = userService.loadUserByUsername("email");
+
+        assertThat(response).isInstanceOf(org.springframework.security.core.userdetails.User.class);
+        assertThat(response.getUsername()).isEqualTo("email");
 
     @DisplayName("Unit test for the edit user details method")
     @Test
@@ -127,6 +225,5 @@ public class UserServiceTests {
 
 
         assertEquals(editUserDetailsDto.getLastName(), user.getLastName());
-
     }
 }
