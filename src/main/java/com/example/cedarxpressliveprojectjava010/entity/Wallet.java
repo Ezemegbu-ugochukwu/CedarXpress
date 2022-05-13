@@ -20,7 +20,7 @@ import java.util.Locale;
 @ToString
 public class Wallet extends Base{
 
-    private double balance;
+    private BigDecimal balance;
 
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
