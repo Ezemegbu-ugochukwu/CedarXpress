@@ -53,8 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**", "/swagger-ui/index.html#")
                 .permitAll()
                 .antMatchers("/forgot-password")
-                .permitAll()
-                .antMatchers("/fund-wallet")
                 .permitAll();
 
     }
