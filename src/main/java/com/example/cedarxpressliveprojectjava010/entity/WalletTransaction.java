@@ -18,7 +18,7 @@ public class WalletTransaction extends Base{
     private Payment transactionType;
 
     @NotNull(message = "amount field is empty")
-    private Double amount;
+    private BigDecimal amount;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Wallet wallet;
