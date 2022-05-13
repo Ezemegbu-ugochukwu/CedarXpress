@@ -13,8 +13,8 @@ public class ProductDto {
 
         private String productName;
         private String description;
-        private long quantity;
         private double price;
         private SubCategory subCategory;
         private Category category;
     }
+

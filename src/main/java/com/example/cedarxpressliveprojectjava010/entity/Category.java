@@ -1,12 +1,10 @@
 package com.example.cedarxpressliveprojectjava010.entity;
-
 import lombok.*;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,13 +13,6 @@ import java.util.List;
 @Setter
 @ToString
 public class Category extends Base{
-
-
+    @Column(unique = true)
     private String categoryName;
-    private String description;
-
-    @OneToMany
-    @ToString.Exclude
-    private List<SubCategory> subCategories = new ArrayList<>();
-
 }

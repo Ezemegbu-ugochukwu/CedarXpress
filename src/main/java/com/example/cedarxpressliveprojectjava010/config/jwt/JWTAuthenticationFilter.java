@@ -32,7 +32,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailService;
-    BlacklistService blacklistService;
+    private final BlacklistService blacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
