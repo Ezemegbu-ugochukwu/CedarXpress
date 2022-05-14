@@ -1,8 +1,12 @@
 package com.example.cedarxpressliveprojectjava010.exception;
 
 
+import com.example.cedarxpressliveprojectjava010.response.ApiResponse;
+
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +24,28 @@ import java.util.Date;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
+
+    public ResponseEntity<?> handleNotAPostEX(UserNotFoundException ex, WebRequest request) {
+
     public ResponseEntity<?> handleUserNotFoundEx(UserNotFoundException ex, WebRequest request){
         ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetail,HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<?> handeleProductNotFoundEX(ProductNotFoundException ex, WebRequest request){
+
         ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetail,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
+
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<?> handleNotAPostEX(ProductNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(new ApiResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<?> handleNotAPostEX(CartNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(new ApiResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<?> handleFileNotFoundEX(FileNotFoundException ex, WebRequest request){
@@ -73,6 +90,7 @@ public class GlobalExceptionHandler {
                 e.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, httpStatus);
+
     }
 }
 
