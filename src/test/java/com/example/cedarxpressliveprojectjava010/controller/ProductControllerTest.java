@@ -1,9 +1,11 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
+import com.example.cedarxpressliveprojectjava010.config.CloudinaryConfig;
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Category;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.SubCategory;
+import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
 import com.example.cedarxpressliveprojectjava010.util.AppConstants;
 import com.example.cedarxpressliveprojectjava010.util.ProductResponse;
@@ -47,8 +49,15 @@ class ProductControllerTest {
     @MockBean
     ProductService productService;
 
+    @MockBean
+    CloudinaryService cloudinaryService;
+
+    @MockBean
+    CloudinaryConfig cloudinaryConfig;
+
     @Autowired
     private ObjectMapper objectMapper;
+
 
     ResponseEntity<ProductResponse> productResponseEntity;
 
@@ -65,8 +74,6 @@ class ProductControllerTest {
 
         Category category = Category.builder()
                 .categoryName("")
-                .description("")
-                .subCategories(subCategories)
                 .build();
 
         subCategory = SubCategory.builder()
@@ -77,10 +84,9 @@ class ProductControllerTest {
         productDto = ProductDto.builder()
                 .productName("dining_set")
                 .description("best_in_town")
-                .quantity(3)
                 .price(400.00)
-                .subCategory(subCategory)
-                .category(category)
+                .subCategory(subCategory.getSubCategoryName())
+                .category(category.getCategoryName())
                 .build();
 
         product = new Product();

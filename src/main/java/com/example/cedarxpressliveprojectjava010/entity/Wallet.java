@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -20,7 +21,7 @@ import java.util.Locale;
 @ToString
 public class Wallet extends Base{
 
-    private BigDecimal balance;
+    private BigDecimal balance = new BigDecimal(0);
 
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore

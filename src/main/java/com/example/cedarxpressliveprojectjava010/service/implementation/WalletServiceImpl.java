@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ public class WalletServiceImpl implements WalletService {
         Optional<Wallet> wallet = walletRepository.findWalletByUserEmail(fundWalletRequest.getEmail());
         Wallet wallet2;
         if (wallet.isPresent()) {
-            double balance = wallet.get().getBalance();
-            wallet.get().setBalance(balance + fundWalletRequest.getAmount());
+            BigDecimal balance = wallet.get().getBalance();
+            wallet.get().setBalance(balance.add(fundWalletRequest.getAmount()));
             WalletTransaction walletTransaction = new WalletTransaction();
             walletTransaction.setTransactionType(Payment.WALLET);
             walletTransaction.setAmount(fundWalletRequest.getAmount());

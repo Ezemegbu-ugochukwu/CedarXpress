@@ -49,8 +49,6 @@ class ProductServiceImplTest {
 
         Category category = Category.builder()
                 .categoryName("")
-                .description("")
-                .subCategories(subCategories)
                 .build();
 
         subCategory = SubCategory.builder()
@@ -61,10 +59,9 @@ class ProductServiceImplTest {
         productDto = ProductDto.builder()
                 .productName("dining_set")
                 .description("best_in_town")
-                .quantity(3)
                 .price(400.00)
-                .subCategory(subCategory)
-                .category(category)
+                .subCategory(subCategory.getSubCategoryName())
+                .category(category.getCategoryName())
                 .build();
 
         product = new Product();

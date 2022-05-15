@@ -56,13 +56,12 @@ public class UserServiceTests {
     User user;
 
     Authentication auth = Mockito.mock(Authentication.class);
-    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
-      
+
         editUserDetailsDto = EditUserDetailsDto.builder()
                 .firstName("First")
                 .lastName("Success")
@@ -78,25 +77,25 @@ public class UserServiceTests {
                 .confirmPassword("1234")
                 .build();
 
-       user = new User();
-       user.setId(1L);
-       user.setEmail("email");
-       user.setPassword("1234");
-       user.setLastName("last");
-       user.setRole(Role.ROLE_CUSTOMER);
-       user.setFirstName("first");
+        user = new User();
+        user.setId(1L);
+        user.setEmail("email");
+        user.setPassword("1234");
+        user.setLastName("last");
+        user.setRole(Role.ROLE_CUSTOMER);
+        user.setFirstName("first");
 
     }
 
     @Test
-    public void givenUserObject_whenCreatUser_thenSaveUser(){
+    public void givenUserObject_whenCreatUser_thenSaveUser() {
 
 
         given(userRepository.existsByEmail("email")).willReturn(false);
         given(passwordEncoder.encode(registrationDto.getPassword())).willReturn("1234");
-        given(mapper.map(registrationDto,User.class)).willReturn(user);
+        given(mapper.map(registrationDto, User.class)).willReturn(user);
         given(userRepository.save(any())).willReturn(user);
-        given(mapper.map(user,RegistrationDto.class)).willReturn(registrationDto);
+        given(mapper.map(user, RegistrationDto.class)).willReturn(registrationDto);
 
         ResponseEntity<RegistrationDto> response = userService.registerUser(registrationDto);
 
@@ -105,29 +104,29 @@ public class UserServiceTests {
     }
 
     @Test
-    public void givenUserObject_whenCreatUser_thenThrowException(){
+    public void givenUserObject_whenCreatUser_thenThrowException() {
         given(userRepository.existsByEmail("email")).willReturn(true);
 
-        Throwable thrown = catchThrowable(()-> userService.registerUser(registrationDto));
+        Throwable thrown = catchThrowable(() -> userService.registerUser(registrationDto));
 
         assertThat(thrown).isInstanceOf(RuntimeException.class)
                 .hasMessage("User already exist");
     }
 
     @Test
-    public void givenUserObject_whenPasswordsDoNotMatch_thenThrowException(){
+    public void givenUserObject_whenPasswordsDoNotMatch_thenThrowException() {
         registrationDto.setConfirmPassword("anotherString");
-        Throwable thrown = catchThrowable(()-> userService.registerUser(registrationDto));
+        Throwable thrown = catchThrowable(() -> userService.registerUser(registrationDto));
         assertThat(thrown).isInstanceOf(RuntimeException.class)
                 .hasMessage("Passwords do not match");
     }
 
     @DisplayName("Test for different values for ConfirmPassword and New Password")
     @Test
-    public void shouldThrowBadCredentialExceptionForInconsistentNewPassword(){
+    public void shouldThrowBadCredentialExceptionForInconsistentNewPassword() {
         UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
-                        .newPassword("password").confirmPassword("inconsistent").oldPassword("12345")
-                        .build();
+                .newPassword("password").confirmPassword("inconsistent").oldPassword("12345")
+                .build();
         Throwable thrown = catchThrowable(() -> userService.updatePassword(updatePasswordDto));
 
         assertThat(thrown).isInstanceOf(BadCredentialsException.class).hasMessage("New password don't match!");
@@ -135,7 +134,7 @@ public class UserServiceTests {
 
     @DisplayName("Test for Same values for Old and New Password")
     @Test
-    public void shouldThrowBadCredentialExceptionForSameOldAndNewPasswordValues(){
+    public void shouldThrowBadCredentialExceptionForSameOldAndNewPasswordValues() {
         UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
                 .newPassword("password").confirmPassword("password").oldPassword("password")
                 .build();
@@ -146,16 +145,16 @@ public class UserServiceTests {
 
     @DisplayName("Test for Same values for Old inputted By User and old password in database")
     @Test
-    public void shouldThrowBadCredentialExceptionForDifferentOldPasswordValues(){
+    public void shouldThrowBadCredentialExceptionForDifferentOldPasswordValues() {
         UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
                 .newPassword("12345").confirmPassword("12345").oldPassword("password")
                 .build();
         String email = "damilola@gmail.com";
         User user = User.builder()
-                        .firstName("Damilola")
-                        .lastName("Oluwole")
-                        .password("encrypted%%%%")
-                        .build();
+                .firstName("Damilola")
+                .lastName("Oluwole")
+                .password("encrypted%%%%")
+                .build();
 
 
         given(auth.getName()).willReturn("damilola@gmail.com");
@@ -169,7 +168,7 @@ public class UserServiceTests {
 
     @DisplayName("Test for Successfully Updating password")
     @Test
-    public void shouldThrowCallNecessaryMethods(){
+    public void shouldThrowCallNecessaryMethods() {
         UpdatePasswordDto updatePasswordDto = UpdatePasswordDto.builder()
                 .newPassword("12345").confirmPassword("12345").oldPassword("password")
                 .build();
@@ -196,25 +195,26 @@ public class UserServiceTests {
 
     @DisplayName("Test for LoadUSerByUserName throwing error")
     @Test
-    public void shouldThrowErrorIfUserNotFound(){
+    public void shouldThrowErrorIfUserNotFound() {
         given(userRepository.findUserByEmail("damilola@gmail.com")).willReturn(Optional.empty());
-        Throwable thrown = catchThrowable(()->userService.loadUserByUsername("damilola@gmail.com"));
+        Throwable thrown = catchThrowable(() -> userService.loadUserByUsername("damilola@gmail.com"));
         assertThat(thrown).isInstanceOf(UsernameNotFoundException.class).
                 hasMessage("User with email damilola@gmail.com not found");
     }
 
     @DisplayName("Test for LoadUSerByUserName should return Userdetails")
     @Test
-    public void shouldThrowFindUserANdReturnUserDetails(){
+    public void shouldThrowFindUserANdReturnUserDetails() {
         given(userRepository.findUserByEmail("email")).willReturn(Optional.of(user));
         var response = userService.loadUserByUsername("email");
 
         assertThat(response).isInstanceOf(org.springframework.security.core.userdetails.User.class);
         assertThat(response.getUsername()).isEqualTo("email");
 
+    }
     @DisplayName("Unit test for the edit user details method")
     @Test
-    public void shouldCallTheNecessaryMethods(){
+    public void shouldCallTheNecessaryMethods () {
         String name = "email";
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
@@ -222,7 +222,6 @@ public class UserServiceTests {
         given(userRepository.getUserByEmail(name)).willReturn(user);
 
         userService.editUserDetails(editUserDetailsDto);
-
 
         assertEquals(editUserDetailsDto.getLastName(), user.getLastName());
     }

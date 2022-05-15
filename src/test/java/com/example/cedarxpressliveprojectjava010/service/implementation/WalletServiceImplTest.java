@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ class WalletServiceImplTest {
 
         fundWalletRequest = new FundWalletRequest();
         fundWalletRequest.setEmail("chinekeebube@gmail.com");
-        fundWalletRequest.setAmount(200.00);
+        fundWalletRequest.setAmount(new BigDecimal("200.0"));
 
         walletTransaction = new WalletTransaction();
         walletTransaction.setId(1L);

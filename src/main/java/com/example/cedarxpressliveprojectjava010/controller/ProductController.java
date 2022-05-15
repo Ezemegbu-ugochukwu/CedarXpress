@@ -1,6 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
+import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
 import com.example.cedarxpressliveprojectjava010.util.AppConstants;
 import com.example.cedarxpressliveprojectjava010.util.ProductResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final CloudinaryService cloudinaryService;
 
     @GetMapping("/all")
     public ResponseEntity<ProductResponse> getAllProducts(

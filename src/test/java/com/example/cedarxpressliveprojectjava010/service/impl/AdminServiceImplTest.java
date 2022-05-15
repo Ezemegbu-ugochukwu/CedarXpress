@@ -76,6 +76,8 @@ class AdminServiceImplTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(product);
     }
+
+
     @Test
     void addProductImage() {
         String img = "furniture1.jpeg";

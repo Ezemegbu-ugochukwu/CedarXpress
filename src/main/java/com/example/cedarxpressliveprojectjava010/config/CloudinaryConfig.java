@@ -13,6 +13,7 @@ public class CloudinaryConfig {
     private String apiKey;
     @Value("${cloudinary.api_secret}")
     private String apiSecret;
+
     @Bean
     public Cloudinary cloudinaryInstance() {
         Cloudinary cloudinary = null;

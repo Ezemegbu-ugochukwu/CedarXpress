@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
+
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {WalletController.class})
@@ -41,7 +43,7 @@ class WalletControllerTest {
 
         fundWalletRequest = FundWalletRequest.builder()
                 .email("chinekeebube@gmail.com")
-                .amount(100.00)
+                .amount(new BigDecimal(String.valueOf(100.0)))
                 .build();
 
         when(walletService.fundWallet(fundWalletRequest)).thenReturn(new ResponseEntity<>(HttpStatus.OK));
