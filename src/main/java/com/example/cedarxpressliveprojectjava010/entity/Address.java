@@ -23,9 +23,9 @@ public class Address extends Base{
     private String state;
     private String city;
     private String address;
-    private int zipCode;
+    private Integer zipCode;
     private String phoneNumber;
-    private boolean isDefault;
+    private Boolean isDefault;
 
     @ManyToOne
     private AddressList addressList;

@@ -2,7 +2,9 @@ package com.example.cedarxpressliveprojectjava010.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import org.hibernate.annotations.Cascade;
+import org.springframework.data.annotation.Transient;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,4 +29,13 @@ public class Cart extends Base{
     @OneToOne
     @JsonIgnore
     private User customer;
+
+    @Transient
+    public double getCost(){
+        double total = 0.00;
+        for(CartItem e: cartItems){
+            total += (e.getUnit() * e.getProduct().getPrice());
+        }
+        return total;
+    }
 }

@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/user").hasAnyRole("USER","ADMIN")
 
-                .antMatchers("/", "cerderXpress/user/register", "/forgot-password",
+                .antMatchers("/", "cerderXpress/user/register", "/forgot-password").permitAll()
 
                 .antMatchers("/user").hasAnyRole("ROLE_CUSTOMER","ADMIN")
                 .antMatchers("/", "cerderXpress/user/register",

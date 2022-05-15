@@ -70,7 +70,6 @@ class CartControllerTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()
@@ -106,7 +105,6 @@ class CartControllerTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()

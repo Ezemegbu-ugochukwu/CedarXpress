@@ -71,7 +71,6 @@ class CartItemServiceImplTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()
@@ -83,21 +82,11 @@ class CartItemServiceImplTest {
 
         String loggedInEmail = "ugo@gmail.com";
 
-
-//        when(auth.getPrincipal()).thenReturn(user);
-
-
-
-
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(loggedInEmail);
         when(userRepository.getUserByEmail(any())).thenReturn(user);
         when(productRepository.findById(any())).thenReturn(Optional.of(product));
-//        when(userRepository.getUserByEmail(loggedInEmail)).thenReturn(user);
         when(cartRepository.findCartByCustomer(user)).thenReturn(Optional.of(cart));
         when(cartItemRepository.findCartItemByCartAndProduct(any(), any())).thenReturn(Optional.of(cartItem));
-//        when(cartRepository.save(any())).thenReturn(cart);
+
 
         var ans = cartItemService.addToCart(product.getId());
         assertEquals(ans.getStatusCode(), HttpStatus.OK);
@@ -119,7 +108,6 @@ class CartItemServiceImplTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()
@@ -157,7 +145,6 @@ class CartItemServiceImplTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()
@@ -198,7 +185,6 @@ class CartItemServiceImplTest {
                 .productName("shoe")
                 .description("a black shoe")
                 .price(50.00)
-                .quantity(2L)
                 .build();
 
         Cart cart = Cart.builder()

@@ -23,30 +23,22 @@ import java.util.Date;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(UserNotFoundException.class)
-
-    public ResponseEntity<?> handleNotAPostEX(UserNotFoundException ex, WebRequest request) {
-
     public ResponseEntity<?> handleUserNotFoundEx(UserNotFoundException ex, WebRequest request){
         ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetail,HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<?> handeleProductNotFoundEX(ProductNotFoundException ex, WebRequest request){
-
         ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
 
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> handleNotAPostEX(ProductNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<?> handleCartNotFoundEX(CartNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>(new ApiResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(CartNotFoundException.class)
-    public ResponseEntity<?> handleNotAPostEX(CartNotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(new ApiResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
-
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<?> handleFileNotFoundEX(FileNotFoundException ex, WebRequest request){
         ApiErrorDetail errorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
@@ -83,6 +75,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleGeneralException(Exception e, WebRequest request){
         return handleException(e, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(value = {CartEmptyException.class})
+    public ResponseEntity<Object> handleCartEmptyException(CartEmptyException e, WebRequest request){
+        return handleException(e, request, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<Object> handleException(Exception e, WebRequest request, HttpStatus httpStatus){
         log.error("API error: ", e);
         ExceptionResponse exceptionResponse = new ExceptionResponse(

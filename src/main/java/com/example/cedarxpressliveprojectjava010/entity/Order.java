@@ -1,8 +1,10 @@
 package com.example.cedarxpressliveprojectjava010.entity;
 
+import com.example.cedarxpressliveprojectjava010.enums.DeliveryStatus;
 import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,17 +25,18 @@ public class Order extends Base{
     @ToString.Exclude
     private List<OrderItem> customerOrder = new ArrayList<>();
 
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
     private LocalDateTime timeOfCompletion;
-    private Boolean isArrived;
-    private Boolean isActive;
 
-
-    private double deliveryFee;
-    private double discount;
-    private double price;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
 
     @Enumerated(EnumType.STRING)
     private Payment paymentMethod;
+
+    private Double deliveryFee;
+    private Double discount;
+    private Double price;
 
     @OneToOne
     private Address address;
@@ -42,10 +45,6 @@ public class Order extends Base{
     @JsonIgnore
     private User customer;
 
-
-    @ManyToOne
-    @JsonIgnore
-    private User rider;
 
 }
 
