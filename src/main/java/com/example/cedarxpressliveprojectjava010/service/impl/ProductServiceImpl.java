@@ -5,12 +5,13 @@ import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
-import com.example.cedarxpressliveprojectjava010.util.ProductResponse;
+import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,34 +25,32 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ModelMapper mapper;
 
-    @Override
-    public ResponseEntity<ProductResponse> getAllProducts(int pageNo, int pageSize) {
-
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Product> productPage = productRepository.findAll(pageable);
-        List<Product> productList = productPage.getContent();
-        List<ProductDto> content = productList.stream().map(this::mapToDto).collect(Collectors.toList());
-
-        ProductResponse productResponse = ProductResponse.builder()
-                .content(content)
-                .pageNo(productPage.getNumber())
-                .pageSize(productPage.getSize())
-                .totalElements(productPage.getTotalElements())
-                .totalPages(productPage.getTotalPages())
-                .last(productPage.isLast())
-                .build();
-
-        return ResponseEntity.ok(productResponse);
-
-    }
 
     @Override
     public ResponseEntity<ProductDto> getASingleProduct(long id) {
         Product product = productRepository.findById(id).orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(mapToDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(mapsToDto(product), HttpStatus.OK);
     }
 
-    public ProductDto mapToDto(Product product){
+    @Override
+    public List<ViewProductDto> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword) {
+
+        //create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Product> products = productRepository.findAll(keyword, pageable);
+        List<Product> productList = products.getContent();
+
+        return productList.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+
+    private ViewProductDto mapToDto(Product product){
+        return mapper.map(product, ViewProductDto.class);
+    }
+
+
+    private ProductDto mapsToDto(Product product){
+
         return mapper.map(product, ProductDto.class);
     }
 }

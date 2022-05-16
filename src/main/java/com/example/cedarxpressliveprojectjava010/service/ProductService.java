@@ -1,10 +1,12 @@
 package com.example.cedarxpressliveprojectjava010.service;
 
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
-import com.example.cedarxpressliveprojectjava010.util.ProductResponse;
+import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface ProductService {
-    ResponseEntity<ProductResponse> getAllProducts(int pageNo, int pageSize);
+    List<ViewProductDto> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword);
     ResponseEntity<ProductDto> getASingleProduct(long id);
 }

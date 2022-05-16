@@ -69,22 +69,6 @@ class ProductServiceImplTest {
         product.setProductName(productDto.getProductName());
     }
 
-
-    @Test
-    void getAllProducts() {
-        Pageable pageable = PageRequest.of(0,2);
-        List<Product> productList = List.of(product);
-        Page<Product> productPage = new PageImpl<>(productList);
-
-       when(productRepository.findAll(pageable)).thenReturn(productPage);
-
-        underTest.getAllProducts(0,2);
-        verify(productRepository).findAll(pageable);
-
-
-
-}
-
     @Test
     void getASingleProduct() {
         when(productRepository.findById(product.getId())).thenReturn(Optional.ofNullable(product));
