@@ -4,6 +4,7 @@ import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.service.AdminService;
 import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,5 +24,10 @@ public class AdminController {
         String url = cloudinaryService.uploadFile(image);
         Long productId = product.getId();
         return adminService.addProductImage(url,productId);
+    }
+    @PutMapping("/updateProduct{id}")
+    public ResponseEntity<ProductDto>updateProduct(@RequestBody ProductDto productDto, @PathVariable(name = "id") Long id) {
+        ProductDto newProduct = adminService.updateProduct(productDto, id);
+        return ResponseEntity.ok(newProduct);
     }
 }

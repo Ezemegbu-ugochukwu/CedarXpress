@@ -67,4 +67,49 @@ public class AdminServiceImpl implements AdminService {
         productRepository.save(product);
         return ResponseEntity.ok(product);
     }
+
+    @Override
+    public ProductDto updateProduct(ProductDto productDto, Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(()-> new ProductNotFoundException("Product with ID" + " " + productId +"does not exist" ));
+        if(productDto.getCategory() != null || productDto.getCategory().isBlank()) {
+            Optional<Category> categoryOps = categoryRepository.findCategoryByCategoryName(productDto.getCategory());
+            if(categoryOps.isPresent()) {
+                Category category = categoryOps.get();
+                product.setCategory(category);
+            }
+        }
+        if(productDto.getSubCategory() != null || productDto.getSubCategory().isBlank()) {
+            Optional<SubCategory> subcategoryOps = subCategoryRepository.findSubCategoryBySubCategoryName(productDto.getSubCategory());
+            if(subcategoryOps.isPresent()) {
+                SubCategory subCategory = subcategoryOps.get();
+                product.setSubCategory(subCategory);
+            }
+        }
+
+        if(productDto.getProductName() != null || productDto.getProductName().isBlank()) {
+            product.setProductName(productDto.getProductName());
+        }
+
+        if(productDto.getPrice() != 0) {
+            product.setPrice(productDto.getPrice());
+        }
+
+
+        if(productDto.getDescription() != null || productDto.getDescription().isBlank()) {
+            product.setDescription(productDto.getDescription());
+        }
+
+
+        Product updatedProduct = productRepository.save(product);
+
+
+        ProductDto newUpdatedProduct = new ProductDto();
+        newUpdatedProduct.setProductName(updatedProduct.getProductName());
+        newUpdatedProduct.setDescription(updatedProduct.getDescription());
+        newUpdatedProduct.setPrice(updatedProduct.getPrice());
+        newUpdatedProduct.setSubCategory(updatedProduct.getSubCategory().getSubCategoryName());
+        newUpdatedProduct.setCategory(updatedProduct.getCategory().getCategoryName());
+
+        return newUpdatedProduct;
+    }
 }

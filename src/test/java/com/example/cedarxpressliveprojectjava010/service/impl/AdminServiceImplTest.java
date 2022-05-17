@@ -90,4 +90,22 @@ class AdminServiceImplTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(product);
     }
+
+    @Test
+    void updateProduct() {
+        given(productRepository.findById(any())).willReturn(Optional.of(product));
+        given(categoryRepository.findCategoryByCategoryName(productDto.getCategory())).willReturn(Optional.of(category));
+        given(subCategoryRepository.findSubCategoryBySubCategoryName(productDto.getSubCategory())).willReturn(Optional.of(subCategory));
+        product.setDescription("New Persian Door");
+        product.setPrice(1500000);
+        given(productRepository.save(any())).willReturn(product);
+
+        productDto.setDescription("New Persian Door");
+        productDto.setPrice(1500000);
+        ProductDto testUpdatedProduct = adminService.updateProduct(productDto, product.getId());
+
+        assertThat(testUpdatedProduct.getDescription()).isEqualTo(productDto.getDescription());
+        assertThat(testUpdatedProduct.getPrice()).isEqualTo(productDto.getPrice());
+
+    }
 }
