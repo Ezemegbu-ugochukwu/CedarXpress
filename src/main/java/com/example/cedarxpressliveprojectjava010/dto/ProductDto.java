@@ -1,22 +1,25 @@
 package com.example.cedarxpressliveprojectjava010.dto;
-import com.example.cedarxpressliveprojectjava010.entity.Category;
-import com.example.cedarxpressliveprojectjava010.entity.SubCategory;
 import lombok.*;
+import javax.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
 
-@Builder
-@Getter
+
+
 @Setter
-@ToString
-@NoArgsConstructor
+@Getter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
-
-        private String productName;
-        private String description;
-        private double price;
-        private String subCategory;
-        private String category;
-    }
+    @NotNull(message = "Product name field is empty")
+    private String productName;
+    @NotNull(message = "Description field is empty")
+    private String description;
+    @NotNull(message = "Price field is empty")
+    private double price;
+    @NotNull(message = "Sub category field is empty")
+    private String subCategory;
+    @NotNull(message = "Category field is empty")
+    private String category;
+}
 

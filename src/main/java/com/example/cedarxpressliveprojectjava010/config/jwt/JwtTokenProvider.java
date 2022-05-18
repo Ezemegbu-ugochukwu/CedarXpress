@@ -17,7 +17,6 @@ public class JwtTokenProvider {
     private int JwtExpirationInMn;
 
 
-    // generate token
     public String generateToken(Authentication authentication){
         String email = authentication.getName();
         Date currentDate = new Date();

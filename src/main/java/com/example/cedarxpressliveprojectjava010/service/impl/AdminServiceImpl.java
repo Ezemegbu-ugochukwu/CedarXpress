@@ -17,8 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
+
+
+
 import java.util.Optional;
 @Service
 @AllArgsConstructor
@@ -27,6 +28,8 @@ public class AdminServiceImpl implements AdminService {
     private final SubCategoryRepository subCategoryRepository;
     private final ProductRepository productRepository;
     private final ImageUrlRepository imageUrlRepository;
+
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -57,6 +60,7 @@ public class AdminServiceImpl implements AdminService {
         newProduct = productRepository.save(newProduct);
         return new ResponseEntity<Product>(newProduct, HttpStatus.CREATED);
     }
+
     @Override
     @Transactional
     public ResponseEntity<Product> addProductImage(String img, Long productId) {
@@ -66,6 +70,14 @@ public class AdminServiceImpl implements AdminService {
         product.getImages().add(imgUrl);
         productRepository.save(product);
         return ResponseEntity.ok(product);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteProduct(Long id) {
+        productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found!"));
+        productRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Product with id "+ id +" deleted successfully");
     }
 
     @Override

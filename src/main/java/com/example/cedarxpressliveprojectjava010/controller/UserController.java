@@ -22,10 +22,12 @@ public class UserController {
 
     private final UserService userService;
 
+
     @PostMapping("/register")
     public ResponseEntity<RegistrationDto> registerUser(@Valid @RequestBody RegistrationDto registrationDto){
         return userService.registerUser(registrationDto);
     }
+
 
     @PutMapping("/update/")
     public ResponseEntity<String> editUserDetails(@RequestBody EditUserDetailsDto editUserDetailsDto){

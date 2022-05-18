@@ -6,5 +6,7 @@ import java.util.List;
 public interface AdminService {
     ResponseEntity<Product> createProduct(ProductDto productDto);
     ResponseEntity<Product> addProductImage(String img, Long productId);
+    ResponseEntity<String> deleteProduct(Long id);
     ProductDto updateProduct(ProductDto productDto, Long productId);
+
 }

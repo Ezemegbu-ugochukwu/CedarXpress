@@ -8,21 +8,25 @@ import com.example.cedarxpressliveprojectjava010.repository.CategoryRepository;
 import com.example.cedarxpressliveprojectjava010.repository.ImageUrlRepository;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
 import com.example.cedarxpressliveprojectjava010.repository.SubCategoryRepository;
-import com.example.cedarxpressliveprojectjava010.service.AdminService;
-import lombok.AllArgsConstructor;
+
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.modelmapper.ModelMapper;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
@@ -37,14 +41,24 @@ class AdminServiceImplTest {
     private  ProductRepository productRepository;
     @Mock
     private  ImageUrlRepository imageUrlRepository;
+
+    @Mock
+    private ModelMapper modelMapper;
+
+
     ProductDto productDto;
     Product product;
     Category category;
     SubCategory subCategory;
     ImageUrl imgUrl;
+
+
+
+
+
     @BeforeEach
     void setUp() {
-        adminService = new AdminServiceImpl(categoryRepository,subCategoryRepository,productRepository,imageUrlRepository);
+
         productDto = ProductDto.builder()
                 .productName("reading chair")
                 .description("egronomic chair to rest the neck")
@@ -67,6 +81,7 @@ class AdminServiceImplTest {
         product.setId(1L);
         imgUrl = ImageUrl.builder().img("furniture1.jpeg").build();
     }
+
     @Test
     void createProduct() {
         given(categoryRepository.findCategoryByCategoryName(productDto.getCategory())).willReturn(Optional.of(category));
@@ -76,7 +91,6 @@ class AdminServiceImplTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(product);
     }
-
 
     @Test
     void addProductImage() {
@@ -89,6 +103,15 @@ class AdminServiceImplTest {
         ResponseEntity<Product> response = adminService.addProductImage(img, 1l);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(product);
+    }
+
+    @Test
+    void deleteProduct(){
+
+        given(productRepository.findById(1L)).willReturn(Optional.of(product));
+        ResponseEntity<String> response = adminService.deleteProduct(1L);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo("Product with id "+1L+" deleted successfully");
     }
 
     @Test
@@ -106,6 +129,5 @@ class AdminServiceImplTest {
 
         assertThat(testUpdatedProduct.getDescription()).isEqualTo(productDto.getDescription());
         assertThat(testUpdatedProduct.getPrice()).isEqualTo(productDto.getPrice());
-
     }
 }
