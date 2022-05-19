@@ -1,8 +1,11 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
+import com.example.cedarxpressliveprojectjava010.dto.AddressDto;
 import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.dto.RegistrationDto;
 import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
+import com.example.cedarxpressliveprojectjava010.entity.Address;
+import com.example.cedarxpressliveprojectjava010.service.AddressService;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +24,7 @@ public class UserController {
 
 
     private final UserService userService;
+    private final AddressService addressService;
 
 
     @PostMapping("/register")
@@ -35,6 +39,11 @@ public class UserController {
         return new ResponseEntity<>(
                 "details updated", HttpStatus.OK
         );
+    }
+
+    @PostMapping("/address")
+    public ResponseEntity<Address> createAddress(@RequestBody AddressDto addressDto){
+        return addressService.createAddress(addressDto);
     }
 
     @PutMapping ("/update-password")

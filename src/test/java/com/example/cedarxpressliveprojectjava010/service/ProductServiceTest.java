@@ -1,5 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.service;
 
+import com.example.cedarxpressliveprojectjava010.config.CloudinaryConfig;
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Category;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,6 +38,11 @@ class ProductServiceTest {
     private ProductRepository productRepository;
     @Mock
     private ModelMapper mapper;
+    @MockBean
+    private CloudinaryService cloudinaryService;
+    @MockBean
+    private CloudinaryConfig cloudinaryConfig;
+
 
 
     private Product product;

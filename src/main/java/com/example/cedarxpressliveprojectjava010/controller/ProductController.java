@@ -20,7 +20,7 @@ public class ProductController {
     private final CloudinaryService cloudinaryService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getASingleProduct(@PathVariable("id") long id){
+    public ResponseEntity<ViewProductDto> getASingleProduct(@PathVariable("id") long id){
         return productService.getASingleProduct(id);
 
     }

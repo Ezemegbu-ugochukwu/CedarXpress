@@ -4,6 +4,7 @@ package com.example.cedarxpressliveprojectjava010.service.impl;
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
+import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,11 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper mapper;
 
 
+
     @Override
-    public ResponseEntity<ProductDto> getASingleProduct(long id) {
+    public ResponseEntity<ViewProductDto> getASingleProduct(long id) {
         Product product = productRepository.findById(id).orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(mapsToDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(mapToDto(product), HttpStatus.OK);
     }
 
     @Override

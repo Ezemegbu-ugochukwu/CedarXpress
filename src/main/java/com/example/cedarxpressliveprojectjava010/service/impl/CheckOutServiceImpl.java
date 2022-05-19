@@ -1,85 +1,60 @@
 package com.example.cedarxpressliveprojectjava010.service.impl;
 
-import com.example.cedarxpressliveprojectjava010.dto.CheckOutOneDto;
-import com.example.cedarxpressliveprojectjava010.dto.CheckOutTwoDto;
+import com.example.cedarxpressliveprojectjava010.dto.CheckOutDto;
+import com.example.cedarxpressliveprojectjava010.dto.OrderDto;
 import com.example.cedarxpressliveprojectjava010.entity.*;
-import com.example.cedarxpressliveprojectjava010.enums.AddressType;
 import com.example.cedarxpressliveprojectjava010.enums.DeliveryStatus;
 import com.example.cedarxpressliveprojectjava010.exception.CartEmptyException;
 import com.example.cedarxpressliveprojectjava010.repository.*;
 import com.example.cedarxpressliveprojectjava010.service.CheckOutService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 @Transactional
 public class CheckOutServiceImpl implements CheckOutService {
+
     private OrderRepository orderRepository;
     private OrderItemRepository orderItemRepository;
     private UserRepository userRepository;
     private AddressRepository addressRepository;
-    private AddressListRepository addressListRepository;
-    private ModelMapper modelMapper;
+
 
 
     @Override
-    public Order makeOrder(CheckOutOneDto checkOutOneDto) {
+    public ResponseEntity<OrderDto> makeOrder(CheckOutDto checkOutDto) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        Cart cart = checkOutOneDto.getCart();
-        if(cart.getCartItems().size() < 1) throw new CartEmptyException("Cart is Empty");
         User user = userRepository.getUserByEmail(loggedInEmail);
+        Cart cart = checkOutDto.getCart();
+        if(cart.getCartItems().size() < 1) throw new CartEmptyException("Cart is Empty");
+        Address address = addressRepository.getById(checkOutDto.getAddress_id());
 
-        AddressList addressList = null;
-
-        Optional<AddressList> optionalAddressList =
-                addressListRepository.findAddressListByCustomer(user);
-
-
-        if(optionalAddressList.isEmpty()){
-            addressList = AddressList.builder()
-                    .customer(user)
-                    .build();
-            addressListRepository.save(addressList);
-        }else {
-            addressList = optionalAddressList.get();
-        }
-
-        //address;
-        Address address = Address.builder()
-                .state(checkOutOneDto.getState())
-                .address(checkOutOneDto.getAddress())
-                .city(checkOutOneDto.getCity())
-                .phoneNumber(checkOutOneDto.getPhoneNumber())
-                .isDefault(false)
-                .addressType(AddressType.SHIPPING)
-                .zipCode(checkOutOneDto.getZipCode())
-                .addressList(addressList)
+        Order order = Order.builder().customer(user)
+                .customerOrder(new ArrayList<>())
+                .customer(user)
+                .deliveryFee(0.00)
+                .paymentMethod(checkOutDto.getPaymentMethod())
+                .discount(0.00)
+                .deliveryStatus(DeliveryStatus.PENDING)
+                .price(0D)
+                .address(address)
                 .build();
-        addressRepository.save(address);
-        addressList.getAddressList().add(address);
-        addressListRepository.save(addressList);
 
-        Order order = Order.builder().customer(user).build();
         order = orderRepository.save(order);
-
         List<OrderItem> orderItems = this.convertCartToOrderItemList(cart,order);
-
         order.setCustomerOrder(orderItems);
-        order.setPaymentMethod(checkOutOneDto.getPaymentMethod());
-        order.setAddress(address);
-        order.setDiscount(0.0);
-        order.setDeliveryFee(0.00);
-        order.setDeliveryStatus(DeliveryStatus.PENDING);
+        order.setPrice(checkOutDto.getCart().getCost());
+        OrderDto orderDto = this.mapToDto(orderRepository.save(order));
+        return ResponseEntity.ok(orderDto);
 
-        return orderRepository.save(order);
     }
 
     private List<OrderItem> convertCartToOrderItemList(Cart cart,Order order){
@@ -98,26 +73,15 @@ public class CheckOutServiceImpl implements CheckOutService {
         return orderItems;
     }
 
-    @Override
-    public Order makeOrder(CheckOutTwoDto checkOutTwoDto) {
-        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getUserByEmail(loggedInEmail);
-
-        Cart cart = checkOutTwoDto.getCart();
-        if(cart.getCartItems().size() < 1) throw new CartEmptyException("Cart is Empty");
-        Order order = Order.builder().customer(user).build();
-        order = orderRepository.save(order);
-
-        List<OrderItem> orderItems = this.convertCartToOrderItemList(cart,order);
-
-        order.setCustomerOrder(orderItems);
-        order.setPaymentMethod(checkOutTwoDto.getPaymentMethod());
-        order.setAddress(checkOutTwoDto.getAddress());
-        order.setDiscount(0.0);
-        order.setDeliveryFee(0.00);
-        order.setDeliveryStatus(DeliveryStatus.PENDING);
-
-        return  orderRepository.save(order);
-
+    private OrderDto mapToDto(Order order){
+        return OrderDto.builder()
+                .deliveryStatus(order.getDeliveryStatus())
+                .address(order.getAddress().getAddress())
+                .paymentMethod(order.getPaymentMethod())
+                .user(order.getCustomer())
+                .price(order.getPrice())
+                .customerOrder(order.getCustomerOrder())
+                .timeOfCompletion(null)
+                .build();
     }
 }

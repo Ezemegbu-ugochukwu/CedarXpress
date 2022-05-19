@@ -28,6 +28,6 @@ public class Address extends Base{
     private Boolean isDefault;
 
     @ManyToOne
-    private AddressList addressList;
+    private User user;
 
 }

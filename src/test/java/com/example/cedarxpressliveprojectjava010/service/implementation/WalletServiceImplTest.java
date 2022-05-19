@@ -6,6 +6,7 @@ import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.entity.WalletTransaction;
 import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.example.cedarxpressliveprojectjava010.enums.Role;
+import com.example.cedarxpressliveprojectjava010.enums.TransactionType;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletTransactionsRepository;
@@ -67,7 +68,7 @@ class WalletServiceImplTest {
         walletTransaction = new WalletTransaction();
         walletTransaction.setId(1L);
         walletTransaction.setWallet(wallet);
-        walletTransaction.setTransactionType(Payment.WALLET);
+        walletTransaction.setTransactionType(TransactionType.FUNDWALLET);
         walletTransaction.setAmount(fundWalletRequest.getAmount());
         walletTransaction.setCreatedTime(LocalDateTime.now());
         walletTransaction.setModifiedTime(LocalDateTime.now());

@@ -5,6 +5,7 @@ import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.entity.WalletTransaction;
 import com.example.cedarxpressliveprojectjava010.enums.Payment;
+import com.example.cedarxpressliveprojectjava010.enums.TransactionType;
 import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletRepository;
@@ -39,7 +40,7 @@ public class WalletServiceImpl implements WalletService {
             BigDecimal balance = wallet.get().getBalance();
             wallet.get().setBalance(balance.add(fundWalletRequest.getAmount()));
             WalletTransaction walletTransaction = new WalletTransaction();
-            walletTransaction.setTransactionType(Payment.WALLET);
+            walletTransaction.setTransactionType(TransactionType.FUNDWALLET);
             walletTransaction.setAmount(fundWalletRequest.getAmount());
             walletTransaction.setModifiedTime(LocalDateTime.now());
             walletTransaction.setCreatedTime(LocalDateTime.now());
@@ -52,7 +53,7 @@ public class WalletServiceImpl implements WalletService {
             wallet1.setUser(user.get());
             wallet1.setBalance(fundWalletRequest.getAmount());
             WalletTransaction walletTransaction = new WalletTransaction();
-            walletTransaction.setTransactionType(Payment.WALLET);
+            walletTransaction.setTransactionType(TransactionType.FUNDWALLET);
             walletTransaction.setAmount(fundWalletRequest.getAmount());
             walletTransaction.setModifiedTime(LocalDateTime.now());
             walletTransaction.setCreatedTime(LocalDateTime.now());

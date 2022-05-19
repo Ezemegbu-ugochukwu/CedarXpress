@@ -1,6 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
+import com.example.cedarxpressliveprojectjava010.service.AddressService;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import com.example.cedarxpressliveprojectjava010.service.implementation.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,8 @@ class UserControllerINTTest {
     private UserController userController;
     @MockBean
     private UserServiceImpl userService;
+
+    @MockBean  private AddressService addressService;
 
     private UpdatePasswordDto updatePasswordDto;
     @BeforeEach

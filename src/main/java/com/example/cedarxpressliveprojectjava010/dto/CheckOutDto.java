@@ -12,9 +12,9 @@ import org.springframework.data.annotation.Transient;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CheckOutTwoDto {
+public class CheckOutDto {
     private Cart cart;
-    private Address address;
+    private Long address_id;
     private String payment;
 
     @Transient

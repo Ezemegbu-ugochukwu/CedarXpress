@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ProductService {
     List<ViewProductDto> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword);
-    ResponseEntity<ProductDto> getASingleProduct(long id);
+    ResponseEntity<ViewProductDto> getASingleProduct(long id);
 }

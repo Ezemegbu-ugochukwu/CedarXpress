@@ -1,6 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.service.impl;
 
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
+import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Category;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.SubCategory;
@@ -39,7 +40,7 @@ class ProductServiceImplTest {
     private ProductServiceImpl underTest;
 
     private Product product;
-    private ProductDto productDto;
+    private ViewProductDto viewProductDto;
     private SubCategory subCategory;
 
     @BeforeEach
@@ -56,28 +57,26 @@ class ProductServiceImplTest {
                 .category(category)
                 .build();
 
-        productDto = ProductDto.builder()
+        viewProductDto = ViewProductDto.builder()
                 .productName("dining_set")
                 .description("best_in_town")
                 .price(400.00)
-                .subCategory(subCategory.getSubCategoryName())
-                .category(category.getCategoryName())
                 .build();
 
         product = new Product();
         product.setId(9L);
-        product.setProductName(productDto.getProductName());
+        product.setProductName(viewProductDto.getProductName());
     }
 
     @Test
-    void getASingleProduct() {
+    void shouldGetASingleProduct() {
         when(productRepository.findById(product.getId())).thenReturn(Optional.ofNullable(product));
-        when(mapper.map(product, ProductDto.class)).thenReturn(productDto);
+        when(mapper.map(product, ViewProductDto.class)).thenReturn(viewProductDto);
 
-        ResponseEntity<ProductDto> response = underTest.getASingleProduct(product.getId());
+        ResponseEntity<ViewProductDto> response = underTest.getASingleProduct(product.getId());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody()).isEqualTo(productDto);
+        assertThat(response.getBody()).isEqualTo(viewProductDto);
     }
 }

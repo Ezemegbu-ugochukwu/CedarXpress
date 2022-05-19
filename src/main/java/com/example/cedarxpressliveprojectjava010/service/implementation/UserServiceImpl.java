@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
     public ResponseEntity<RegistrationDto> registerUser(RegistrationDto registrationDto) {
 

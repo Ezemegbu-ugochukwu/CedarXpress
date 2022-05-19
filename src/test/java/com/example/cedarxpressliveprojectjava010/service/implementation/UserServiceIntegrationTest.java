@@ -7,6 +7,7 @@ import com.example.cedarxpressliveprojectjava010.dto.EditUserDetailsDto;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
+import com.example.cedarxpressliveprojectjava010.service.AddressService;
 import com.example.cedarxpressliveprojectjava010.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,7 @@ class UserServiceIntegrationTest {
 //    private MockMvc mockMvc;
     @Autowired
     private UserController userController;
+    @MockBean  private AddressService addressService;
 //    @Autowired
 //    private ObjectMapper objectMapper;
     @Mock
