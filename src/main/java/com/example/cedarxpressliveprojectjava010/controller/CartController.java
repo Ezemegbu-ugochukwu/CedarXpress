@@ -31,4 +31,9 @@ public class CartController {
         cartItemService.removeFromCart(productId,loggedInEmail);
         return new ResponseEntity<>(new ApiResponse<>("product was successfully deleted"), HttpStatus.OK);
     }
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @DeleteMapping ("/clearCart")
+    public ResponseEntity<?> clearCart() {
+        return cartItemService.clearCart();
+    }
 }

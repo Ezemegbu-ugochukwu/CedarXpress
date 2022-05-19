@@ -5,6 +5,7 @@ import com.example.cedarxpressliveprojectjava010.entity.CartItem;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
+import com.example.cedarxpressliveprojectjava010.exception.CartNotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.CartItemRepository;
 import com.example.cedarxpressliveprojectjava010.repository.CartRepository;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
@@ -26,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -197,5 +199,48 @@ class CartItemServiceImplTest {
         Assertions.assertEquals(result.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(result.getBody(), "product successfully deleted" );
 
+    }
+    @Test
+    void canCartItemDoesnotExist() {
+        User user = User.builder()
+                .firstName("ugo")
+                .lastName("eze")
+                .email("ugo@gmail.com")
+                .password("1234")
+                .gender(Gender.MALE)
+                .build();
+
+
+        when(userRepository.getUserByEmail(any())).thenReturn(user);
+        when(cartRepository.findCartByCustomer(user)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> cartItemService.clearCart())
+                .isInstanceOf(CartNotFoundException.class)
+                .hasMessage("cart does not exist!!");
+    }
+    @Test
+    void canClear(){
+        User user = User.builder()
+                .firstName("ugo")
+                .lastName("eze")
+                .email("ugo@gmail.com")
+                .password("1234")
+                .gender(Gender.MALE)
+                .build();
+
+        Product product = Product.builder()
+                .productName("shoe")
+                .description("a black shoe")
+                .price(50.00)
+                .build();
+
+        Cart cart = Cart.builder()
+                .cartItems(new ArrayList<CartItem>())
+                .customer(user)
+                .build();
+
+        when(userRepository.getUserByEmail(any())).thenReturn(user);
+        when(cartRepository.findCartByCustomer(user)).thenReturn(Optional.of(cart));
+        var ans = cartItemService.clearCart();
+        assertEquals(ans.getStatusCode(), HttpStatus.OK);
     }
 }

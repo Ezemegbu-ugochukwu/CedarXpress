@@ -46,10 +46,11 @@ public class CartItemServiceImpl implements CartItemService {
                     .product(product)
                     .unit(1)
                     .build();
+            CartItem savedItem = cartItemRepository.save(cartItem);
 
             cart = Cart.builder()
                     .customer(user)
-                    .cartItems(List.of(cartItem))
+                    .cartItems(List.of(savedItem))
                     .build();
             cartRepository.save(cart);
 
@@ -85,7 +86,18 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.deleteCartItemByCartAndProduct(cart.getId(), productId);
         return new ResponseEntity<String>("product successfully deleted", HttpStatus.OK);
     }
+    @Override
+    public ResponseEntity<String> clearCart(){
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = Optional.ofNullable(userRepository.getUserByEmail(loggedInEmail)).orElseThrow(() -> new UserNotFoundException("User not found"));
+        Optional<Cart> optionalCart = cartRepository.findCartByCustomer(user);
+        if (optionalCart.isEmpty()) {
+            throw new CartNotFoundException("cart does not exist!!");
+        }
+        cartRepository.delete(optionalCart.get());
+        return ResponseEntity.ok("User cart cleared");
 
+    }
 
 }
 

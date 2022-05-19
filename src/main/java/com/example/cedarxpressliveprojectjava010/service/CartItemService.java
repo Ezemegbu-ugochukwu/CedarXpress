@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface CartItemService {
  ResponseEntity<Cart> addToCart (Long productId);
  ResponseEntity<String> removeFromCart(Long productId, String userEmail);
+ ResponseEntity<String> clearCart();
 }
