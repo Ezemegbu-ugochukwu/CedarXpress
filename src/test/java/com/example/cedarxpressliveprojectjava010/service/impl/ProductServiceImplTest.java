@@ -1,6 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.service.impl;
 
-import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import com.example.cedarxpressliveprojectjava010.entity.Category;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
@@ -13,10 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -25,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

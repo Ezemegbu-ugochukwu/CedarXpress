@@ -1,5 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.service.implementation;
 
+import com.example.cedarxpressliveprojectjava010.dto.WalletDto;
 import com.example.cedarxpressliveprojectjava010.dto.request.FundWalletRequest;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.entity.Wallet;
@@ -11,9 +12,11 @@ import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletTransactionsRepository;
 import com.example.cedarxpressliveprojectjava010.service.WalletService;
-import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,12 +24,20 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
 
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final WalletTransactionsRepository walletTransactionsRepository;
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public WalletServiceImpl(UserRepository userRepository, WalletRepository walletRepository, WalletTransactionsRepository walletTransactionsRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.walletRepository = walletRepository;
+        this.walletTransactionsRepository = walletTransactionsRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public ResponseEntity<Wallet> fundWallet(FundWalletRequest fundWalletRequest) {
@@ -63,6 +74,19 @@ public class WalletServiceImpl implements WalletService {
         }
 
         return new ResponseEntity<>(wallet2, HttpStatus.OK );
+    }
+
+
+
+    @Override
+    public ResponseEntity<WalletDto> checkBalance(long id) {
+        User customer = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+        Wallet wallet = walletRepository.findWalletByUserEmail(customer.getEmail()).get();
+        WalletDto walletDto = WalletDto.builder()
+                .currentBalance(wallet.getBalance())
+                .build();
+        return ResponseEntity.ok(walletDto);
     }
 }
 

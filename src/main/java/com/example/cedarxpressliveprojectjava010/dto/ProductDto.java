@@ -2,15 +2,13 @@ package com.example.cedarxpressliveprojectjava010.dto;
 import lombok.*;
 import javax.validation.constraints.NotNull;
 
-
-
-
 @Setter
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
+
     @NotNull(message = "Product name field is empty")
     private String productName;
     @NotNull(message = "Description field is empty")

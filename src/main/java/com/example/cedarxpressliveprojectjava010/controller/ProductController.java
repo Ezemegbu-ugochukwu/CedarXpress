@@ -1,7 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
-import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
-
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
