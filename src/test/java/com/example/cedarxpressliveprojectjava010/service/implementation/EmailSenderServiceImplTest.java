@@ -2,9 +2,12 @@ package com.example.cedarxpressliveprojectjava010.service.implementation;
 
 import com.example.cedarxpressliveprojectjava010.dto.EmailSenderDto;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,7 @@ import javax.mail.internet.MimeMessage;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 public class EmailSenderServiceImplTest {
     @Mock
     EmailSenderServiceImpl emailSenderService;
@@ -26,11 +29,15 @@ public class EmailSenderServiceImplTest {
     @MockBean
     MimeMessageHelper helper;
 
+    @BeforeEach
+    void setUp() {
+
+    }
+
     @Test
     void send() {
         EmailSenderDto emailSenderDto = new EmailSenderDto("ccanazodo@gmail.com", "Test Mail", "This is a test Mail");
         Mockito.when(emailSenderService.send(any())).thenReturn(new ResponseEntity<>("Message sent successfully", HttpStatus.OK));
-        Mockito.when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
         ResponseEntity<String> responseEntity = emailSenderService.send(emailSenderDto);Assertions.assertThat(responseEntity.getBody()).isEqualTo("Message sent successfully");
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         }
