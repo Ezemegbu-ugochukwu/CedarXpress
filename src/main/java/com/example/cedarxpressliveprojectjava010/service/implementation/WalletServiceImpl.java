@@ -2,11 +2,13 @@ package com.example.cedarxpressliveprojectjava010.service.implementation;
 
 import com.example.cedarxpressliveprojectjava010.dto.WalletDto;
 import com.example.cedarxpressliveprojectjava010.dto.request.FundWalletRequest;
+import com.example.cedarxpressliveprojectjava010.dto.request.WalletWithdrawalRequest;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.entity.WalletTransaction;
 import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.example.cedarxpressliveprojectjava010.enums.TransactionType;
+import com.example.cedarxpressliveprojectjava010.exception.ClientRequestException;
 import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletRepository;
@@ -16,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +44,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public ResponseEntity<Wallet> fundWallet(FundWalletRequest fundWalletRequest) {
+
         Optional<User> user = userRepository.findUserByEmail(fundWalletRequest.getEmail());
         if (user.isEmpty()) {
             throw new NotFoundException("Kindly input correct email");
@@ -88,6 +92,26 @@ public class WalletServiceImpl implements WalletService {
                 .build();
         return ResponseEntity.ok(walletDto);
     }
+
+    @Override
+    public ResponseEntity<Wallet> walletWithdrawal(WalletWithdrawalRequest walletWithdrawalRequest) {
+        Wallet wallet = walletRepository.findWalletByUserEmail(walletWithdrawalRequest.getEmail()).orElseThrow(()-> new NotFoundException("Kindly input correct email"));
+        if (walletWithdrawalRequest.getAmount().compareTo(wallet.getBalance()) > 0) {
+            throw new ClientRequestException("Insufficient funds");
+        } else {
+            BigDecimal balance = wallet.getBalance();
+            wallet.setBalance(balance.subtract(walletWithdrawalRequest.getAmount()));
+            WalletTransaction walletTransaction = new WalletTransaction();
+            walletTransaction.setTransactionType(TransactionType.WITHDRAWAL);
+            walletTransaction.setAmount(walletWithdrawalRequest.getAmount());
+            walletTransaction.setCreatedTime(LocalDateTime.now());
+            walletTransaction.setWallet(wallet);
+            walletTransactionsRepository.save(walletTransaction);
+            walletRepository.save(wallet);
+        }
+        return ResponseEntity.ok(wallet);
+    }
+
 }
 
 
