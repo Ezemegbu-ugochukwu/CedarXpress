@@ -106,6 +106,7 @@ class AdminServiceImplTest {
     }
 
     @Test
+
     void deleteProduct(){
 
         given(productRepository.findById(1L)).willReturn(Optional.of(product));
@@ -129,5 +130,7 @@ class AdminServiceImplTest {
 
         assertThat(testUpdatedProduct.getDescription()).isEqualTo(productDto.getDescription());
         assertThat(testUpdatedProduct.getPrice()).isEqualTo(productDto.getPrice());
+
+
     }
 }

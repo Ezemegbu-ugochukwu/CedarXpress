@@ -2,9 +2,7 @@ package com.example.cedarxpressliveprojectjava010.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +15,9 @@ import java.util.Set;
 @ToString
 public class Favorite extends Base{
 
-    @OneToMany
-    @ToString.Exclude
-    private Set<Product> favorites = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Product product;
 
-    @OneToOne
-    private User customer;
+    @ManyToOne
+    private User user;
 }
