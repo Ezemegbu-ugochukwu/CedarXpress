@@ -6,6 +6,7 @@ import com.example.cedarxpressliveprojectjava010.entity.Category;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.SubCategory;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
+import com.example.cedarxpressliveprojectjava010.service.impl.InitializeTransactionServiceImpl;
 import com.example.cedarxpressliveprojectjava010.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,9 @@ class ProductServiceTest {
     private ModelMapper mapper;
     @MockBean
     private CloudinaryService cloudinaryService;
+
+    @MockBean
+    private InitializeTransactionServiceImpl paymentService;
     @MockBean
     private CloudinaryConfig cloudinaryConfig;
 

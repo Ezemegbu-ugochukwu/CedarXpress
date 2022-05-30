@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-@Builder
-@Getter
 @Setter
 @Getter
 @Builder

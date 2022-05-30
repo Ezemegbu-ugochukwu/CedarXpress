@@ -28,13 +28,6 @@ public class AdminController {
         return adminService.addProductImage(url,productId);
     }
 
-    @PutMapping("/updateProduct{id}")
-    public ResponseEntity<ProductDto>updateProduct(@RequestBody ProductDto productDto, @PathVariable(name = "id") Long id) {
-        ProductDto newProduct = adminService.updateProduct(productDto, id);
-        return ResponseEntity.ok(newProduct);
-    }
-
-
     @DeleteMapping(value="/Products/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
         return adminService.deleteProduct(id);
