@@ -38,6 +38,4 @@ public class AdminController {
         ProductDto newProduct = adminService.updateProduct(productDto, id);
         return ResponseEntity.ok(newProduct);
     }
-
-
 }

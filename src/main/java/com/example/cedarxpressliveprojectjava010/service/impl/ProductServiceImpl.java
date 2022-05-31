@@ -2,6 +2,7 @@ package com.example.cedarxpressliveprojectjava010.service.impl;
 
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
+import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id).orElseThrow(RuntimeException::new);
         return new ResponseEntity<>(mapToDto(product), HttpStatus.OK);
     }
+
 
     @Override
     public List<ViewProductDto> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword) {

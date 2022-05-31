@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -110,7 +111,6 @@ class WalletServiceImplTest {
 
     @Test
     void shouldBeAbleToFundWallet() {
-
         when(userRepository.findUserByEmail(any())).thenReturn(Optional.ofNullable(user));
 
         when(userRepository.findUserByEmail(fundWalletRequest.getEmail())).thenReturn(Optional.ofNullable(user));

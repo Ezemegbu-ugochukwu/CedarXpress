@@ -39,9 +39,9 @@ class ProductServiceTest {
     private ModelMapper mapper;
     @MockBean
     private CloudinaryService cloudinaryService;
-
     @MockBean
     private InitializeTransactionServiceImpl paymentService;
+
     @MockBean
     private CloudinaryConfig cloudinaryConfig;
 

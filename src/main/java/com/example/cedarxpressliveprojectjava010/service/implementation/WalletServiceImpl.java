@@ -108,7 +108,6 @@ public class WalletServiceImpl implements WalletService {
         }
         return ResponseEntity.ok(wallet);
     }
-
 }
 
 

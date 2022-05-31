@@ -7,6 +7,7 @@ import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,5 +31,4 @@ public class WalletController {
     ResponseEntity<Wallet> walletWithdrawal(@RequestBody WalletWithdrawalRequest walletWithdrawalRequest){
         return walletService.walletWithdrawal(walletWithdrawalRequest);
     }
-
 }

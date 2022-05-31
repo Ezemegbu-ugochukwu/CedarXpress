@@ -127,8 +127,6 @@ class CheckOutServiceImplTest {
         ResponseEntity<OrderDto> responseEntity = checkOutService.makeOrder(checkOutDto);
 
         assertThat(responseEntity.getBody().getAddress()).isEqualTo(orderDto.getAddress());
-
-
     }
 
 

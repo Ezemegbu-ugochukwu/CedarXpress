@@ -1,8 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.dto;
-
 import lombok.*;
 import javax.validation.constraints.NotNull;
-
 @Setter
 @Getter
 @Builder

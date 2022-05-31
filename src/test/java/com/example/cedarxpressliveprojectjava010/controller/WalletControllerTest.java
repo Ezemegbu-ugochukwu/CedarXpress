@@ -62,24 +62,7 @@ class WalletControllerTest {
             .build()
             .perform(requestBuilder);
         actualPerformResult.andExpect(status().is(200));
-
     }
-
-    @Test
-    @DisplayName("TEST: check wallet balance controller test")
-    void shouldCheckWalletBalance() throws Exception {
-        WalletDto walletDto = WalletDto.builder()
-                .currentBalance(new BigDecimal("20000.00"))
-                .build();
-        when(walletService.checkBalance(1L)).thenReturn(new ResponseEntity<>(walletDto, HttpStatus.OK));
-
-
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.walletController)
-                .build()
-                .perform(MockMvcRequestBuilders.get("/1/wallet"));
-        actualPerformResult.andExpect(status().is(200));
-    }
-
 
     @Test
     void shouldBeAbleToWithdrawFromWallet() throws Exception {
@@ -105,7 +88,20 @@ class WalletControllerTest {
 
                 actualPerformResult.andExpect(status().is(200));
 
-
     }
 
+    @Test
+    @DisplayName("TEST: check wallet balance controller test")
+    void shouldCheckWalletBalance() throws Exception {
+        WalletDto walletDto = WalletDto.builder()
+                .currentBalance(new BigDecimal("20000.00"))
+                .build();
+        when(walletService.checkBalance(1L)).thenReturn(new ResponseEntity<>(walletDto, HttpStatus.OK));
+
+
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.walletController)
+                .build()
+                .perform(MockMvcRequestBuilders.get("/1/wallet"));
+        actualPerformResult.andExpect(status().is(200));
+    }
 }

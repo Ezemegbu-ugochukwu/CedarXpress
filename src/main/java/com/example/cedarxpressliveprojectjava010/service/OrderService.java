@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface OrderService {
+    ResponseEntity<OrderDto> viewParticularUserOrder(long userId, long orderId);
+    List<OrderDto> viewUserOrders(long userId);
 
-    ResponseEntity<OrderDto> getSingleOrder(long userId, long orderId);
-    List<OrderDto> getOrders(long userId);
 }

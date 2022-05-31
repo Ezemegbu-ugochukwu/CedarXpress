@@ -18,6 +18,4 @@ private CheckOutService checkOutService;
     public ResponseEntity<OrderDto> checkOut(@RequestBody CheckOutDto checkOutDto){
         return checkOutService.makeOrder(checkOutDto);
     }
-
-
 }

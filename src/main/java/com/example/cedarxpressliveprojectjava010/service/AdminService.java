@@ -10,5 +10,4 @@ public interface AdminService {
     ResponseEntity<String> deleteProduct(Long id);
     ProductDto updateProduct(ProductDto productDto, Long productId);
 
-
 }
