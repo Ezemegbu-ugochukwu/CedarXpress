@@ -1,5 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
+import com.example.cedarxpressliveprojectjava010.dto.request.AlterProductQuantityRequest;
 import com.example.cedarxpressliveprojectjava010.entity.Cart;
 import com.example.cedarxpressliveprojectjava010.entity.CartItem;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
@@ -115,6 +116,26 @@ class CartControllerTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/remove/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
+
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.cartController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(200));
+    }
+
+    @Test
+    void shouldAlterAndReturnCartItemQuantity() throws Exception {
+
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+        given(SecurityContextHolder.getContext().getAuthentication().getName()).willReturn("ugo@gmail.com");
+
+        AlterProductQuantityRequest request = new AlterProductQuantityRequest(1L, 5);
+        String requestJSON = (new ObjectMapper()).writeValueAsString(request);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/alter")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJSON);
 
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.cartController)
                 .build()

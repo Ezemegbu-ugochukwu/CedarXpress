@@ -9,5 +9,4 @@ public interface AdminService {
     ResponseEntity<Product> addProductImage(String img, Long productId);
     ResponseEntity<String> deleteProduct(Long id);
     ProductDto updateProduct(ProductDto productDto, Long productId);
-
 }

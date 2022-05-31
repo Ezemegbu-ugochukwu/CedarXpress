@@ -1,9 +1,13 @@
 package com.example.cedarxpressliveprojectjava010.service.impl;
 
+import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
+import com.example.cedarxpressliveprojectjava010.dto.request.AlterProductQuantityRequest;
+import com.example.cedarxpressliveprojectjava010.dto.response.CartItemDto;
 import com.example.cedarxpressliveprojectjava010.entity.Cart;
 import com.example.cedarxpressliveprojectjava010.entity.CartItem;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.User;
+import com.example.cedarxpressliveprojectjava010.exception.CartEmptyException;
 import com.example.cedarxpressliveprojectjava010.exception.CartNotFoundException;
 import com.example.cedarxpressliveprojectjava010.exception.ProductNotFoundException;
 import com.example.cedarxpressliveprojectjava010.exception.UserNotFoundException;
@@ -13,6 +17,7 @@ import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +36,7 @@ public class CartItemServiceImpl implements CartItemService {
     private UserRepository userRepository;
     private CartRepository cartRepository;
     private CartItemRepository cartItemRepository;
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -87,17 +93,48 @@ public class CartItemServiceImpl implements CartItemService {
     }
     @Override
     public ResponseEntity<String> clearCart(){
-        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = Optional.ofNullable(userRepository.getUserByEmail(loggedInEmail)).orElseThrow(() -> new UserNotFoundException("User not found"));
+       User user = getLoggedInUser();
         Optional<Cart> optionalCart = cartRepository.findCartByCustomer(user);
         if (optionalCart.isEmpty()) {
             throw new CartNotFoundException("cart does not exist!!");
         }
         cartRepository.delete(optionalCart.get());
         return ResponseEntity.ok("User cart cleared");
-
     }
 
+    @Override
+    public ResponseEntity<CartItemDto> alterProductQuantity(AlterProductQuantityRequest request) {
+        Long productId = request.getProductId();
+        int unit = request.getQuantity();
+        if (unit == 0) throw new IllegalArgumentException("Product quantity cant be zero");
+        User user = getLoggedInUser();
+
+        Cart cart = cartRepository.findCartByCustomer(user)
+                .orElseThrow(
+                () -> new CartNotFoundException("Cart not found for user with user-id" + user.getId()));
+
+        CartItem cartItem = cartItemRepository.findCartItemByCartAndProductId(cart,productId)
+                .orElseThrow(
+                        () -> new CartEmptyException(
+                                String.format("Product with id %d not found for user with id %d",
+                                        productId, user.getId())));
+
+        cartItem.setUnit(unit);
+        CartItem updatedCartItem = cartItemRepository.save(cartItem);
+
+        ProductDto productDto = modelMapper.map(updatedCartItem.getProduct(), ProductDto.class);
+        CartItemDto cartItemDto = CartItemDto.builder()
+                .productDto(productDto)
+                .unit(unit)
+                .build();
+
+        return ResponseEntity.ok(cartItemDto);
+    }
+
+    private User getLoggedInUser(){
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return  userRepository.findUserByEmail(loggedInEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
 }
 
 

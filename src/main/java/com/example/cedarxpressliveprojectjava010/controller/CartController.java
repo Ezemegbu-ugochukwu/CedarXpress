@@ -1,5 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
+import com.example.cedarxpressliveprojectjava010.dto.request.AlterProductQuantityRequest;
+import com.example.cedarxpressliveprojectjava010.dto.response.CartItemDto;
 import com.example.cedarxpressliveprojectjava010.entity.Cart;
 import com.example.cedarxpressliveprojectjava010.response.ApiResponse;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @AllArgsConstructor
@@ -35,4 +39,12 @@ public class CartController {
     public ResponseEntity<?> clearCart() {
         return cartItemService.clearCart();
     }
+
+    @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+    @PutMapping("/alter")
+    public ResponseEntity<CartItemDto> alterProductQuantityInCart(@RequestBody AlterProductQuantityRequest request) {
+        return cartItemService.alterProductQuantity(request);
+    }
+
+
 }

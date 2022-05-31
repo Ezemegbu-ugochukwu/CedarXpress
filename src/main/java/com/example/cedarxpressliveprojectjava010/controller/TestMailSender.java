@@ -13,7 +13,7 @@ import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping("/mail")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TestMailSender {
 
     private final EmailSenderService emailService;
