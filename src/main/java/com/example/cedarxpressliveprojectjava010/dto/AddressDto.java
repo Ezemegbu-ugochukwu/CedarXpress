@@ -1,10 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.dto;
 
-import com.example.cedarxpressliveprojectjava010.enums.AddressType;
 import lombok.*;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Setter
 @Getter

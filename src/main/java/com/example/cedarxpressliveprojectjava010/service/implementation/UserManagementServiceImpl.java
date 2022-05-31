@@ -1,7 +1,5 @@
 package com.example.cedarxpressliveprojectjava010.service.implementation;
 
-
-import com.example.cedarxpressliveprojectjava010.config.emailConfig.EmailConfiguration;
 import com.example.cedarxpressliveprojectjava010.config.jwt.JwtTokenProvider;
 import com.example.cedarxpressliveprojectjava010.dto.EmailSenderDto;
 import com.example.cedarxpressliveprojectjava010.dto.request.ForgotPasswordRequest;
@@ -22,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.mail.MessagingException;
 import java.util.Collections;
 

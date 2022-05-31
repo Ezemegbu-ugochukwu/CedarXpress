@@ -1,7 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.exception;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data

@@ -6,7 +6,6 @@ import com.example.cedarxpressliveprojectjava010.dto.request.WalletWithdrawalReq
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.entity.WalletTransaction;
-import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.example.cedarxpressliveprojectjava010.enums.TransactionType;
 import com.example.cedarxpressliveprojectjava010.exception.ClientRequestException;
 import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
@@ -18,10 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;

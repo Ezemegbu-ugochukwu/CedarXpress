@@ -8,11 +8,9 @@ import com.example.cedarxpressliveprojectjava010.exception.CartEmptyException;
 import com.example.cedarxpressliveprojectjava010.repository.*;
 import com.example.cedarxpressliveprojectjava010.service.CheckOutService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

@@ -6,40 +6,27 @@ import com.example.cedarxpressliveprojectjava010.dto.request.WalletWithdrawalReq
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.entity.Wallet;
 import com.example.cedarxpressliveprojectjava010.entity.WalletTransaction;
-import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.example.cedarxpressliveprojectjava010.enums.Role;
 import com.example.cedarxpressliveprojectjava010.enums.TransactionType;
 import com.example.cedarxpressliveprojectjava010.exception.ClientRequestException;
-import com.example.cedarxpressliveprojectjava010.exception.NotFoundException;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletRepository;
 import com.example.cedarxpressliveprojectjava010.repository.WalletTransactionsRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -195,7 +182,6 @@ class WalletServiceImplTest {
         assertThat(walletResponseEntity1.getStatusCodeValue()).isEqualTo(200);
         assertThat(walletResponseEntity1.getBody().getBalance()).isNotNull();
         assertThat(walletWithdrawalRequest.getAmount()).isNotNull();
-
     }
 
 
@@ -218,9 +204,4 @@ class WalletServiceImplTest {
         }).isInstanceOf(UsernameNotFoundException .class)
                 .hasMessageContaining("user not found");
     }
-
-
-
 }
-
-

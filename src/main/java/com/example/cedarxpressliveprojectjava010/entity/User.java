@@ -3,7 +3,6 @@ package com.example.cedarxpressliveprojectjava010.entity;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
 import com.example.cedarxpressliveprojectjava010.enums.Role;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

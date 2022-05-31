@@ -1,8 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.dto;
+
 import lombok.*;
 import javax.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
 
 @Setter
 @Getter

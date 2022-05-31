@@ -2,7 +2,6 @@ package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.UpdatePasswordDto;
 import com.example.cedarxpressliveprojectjava010.service.AddressService;
-import com.example.cedarxpressliveprojectjava010.service.UserService;
 import com.example.cedarxpressliveprojectjava010.service.implementation.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,12 +20,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ContextConfiguration(classes = {UserController.class})

@@ -14,6 +14,4 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             +"CONCAT(p.Id, p.productName)"
             +" LIKE %?1%")
     Page<Product> findAll(String keyword, Pageable pageable);
-
-    Page<Product> findProductByPriceBetween(Pageable pageable, String startPrice, String endPrice);
 }

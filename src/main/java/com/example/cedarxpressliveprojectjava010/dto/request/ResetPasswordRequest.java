@@ -1,7 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.dto.request;
 
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 
 @Getter

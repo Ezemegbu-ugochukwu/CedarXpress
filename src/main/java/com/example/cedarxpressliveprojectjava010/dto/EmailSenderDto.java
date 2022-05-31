@@ -2,7 +2,6 @@ package com.example.cedarxpressliveprojectjava010.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 

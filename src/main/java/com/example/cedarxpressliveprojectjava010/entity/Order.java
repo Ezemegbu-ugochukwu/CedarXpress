@@ -5,7 +5,6 @@ import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

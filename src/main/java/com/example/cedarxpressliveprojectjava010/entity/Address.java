@@ -2,7 +2,6 @@ package com.example.cedarxpressliveprojectjava010.entity;
 
 import com.example.cedarxpressliveprojectjava010.enums.AddressType;
 import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

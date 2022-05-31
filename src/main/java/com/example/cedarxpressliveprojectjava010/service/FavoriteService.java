@@ -1,12 +1,12 @@
 package com.example.cedarxpressliveprojectjava010.service;
 
-import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
-import com.example.cedarxpressliveprojectjava010.entity.Product;
-import com.example.cedarxpressliveprojectjava010.entity.User;
+import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
 import org.springframework.http.ResponseEntity;
+import java.util.List;
 
 public interface FavoriteService {
-    ResponseEntity<String> addProductToFavorite(Long productId, Long userId);
-    ResponseEntity<String>deleteProductFromFavorite(Long productId, Long userId);
+    ResponseEntity<String> addProductToFavorite(Long productId);
 
+    ResponseEntity<String>deleteProductFromFavorite(Long productId, Long userId);
+    List<ViewProductDto> fetchAllFavoriteProduct(int pageNo, int pageSize);
 }

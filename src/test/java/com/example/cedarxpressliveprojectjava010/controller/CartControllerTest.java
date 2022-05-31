@@ -1,13 +1,11 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
-import com.example.cedarxpressliveprojectjava010.dto.LoginDTO;
 import com.example.cedarxpressliveprojectjava010.entity.Cart;
 import com.example.cedarxpressliveprojectjava010.entity.CartItem;
 import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,14 +24,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

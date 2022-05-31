@@ -4,7 +4,6 @@ import com.example.cedarxpressliveprojectjava010.enums.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 
 @Entity

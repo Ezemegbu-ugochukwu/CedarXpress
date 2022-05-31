@@ -4,7 +4,6 @@ import com.example.cedarxpressliveprojectjava010.entity.Cart;
 import com.example.cedarxpressliveprojectjava010.response.ApiResponse;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

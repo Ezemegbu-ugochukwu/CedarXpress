@@ -2,7 +2,6 @@ package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.CheckOutDto;
 import com.example.cedarxpressliveprojectjava010.dto.OrderDto;
-import com.example.cedarxpressliveprojectjava010.entity.Order;
 import com.example.cedarxpressliveprojectjava010.service.CheckOutService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
