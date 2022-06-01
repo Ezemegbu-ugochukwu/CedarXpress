@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>CedarXpress-Liveproject-Java010</artifactId>
+    <artifactId>cedarxpress</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CedarXpress-Liveproject-Java010</name>
     <description>CedarXpress-Liveproject-Java010</description>
@@ -158,8 +158,7 @@
         <repository>
             <id>github</id>
             <name>CedarExpress App</name>
-            <url>https://maven.pkg.github.com/decadevs/CedarXpress-Liveproject-Java010
-            </url>
+            <url>https://maven.pkg.github.com/decadevs/CedarXpress-Liveproject-Java010</url>
         </repository>
     </distributionManagement>
 </project>
