@@ -9,4 +9,5 @@ public interface FavoriteService {
 
     ResponseEntity<String>deleteProductFromFavorite(Long productId, Long userId);
     List<ViewProductDto> fetchAllFavoriteProduct(int pageNo, int pageSize);
+    ResponseEntity<ViewProductDto> fetchSingleFavoriteProduct(Long productId);
 }

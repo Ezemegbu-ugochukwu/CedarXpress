@@ -25,12 +25,15 @@ public class FavoriteController {
         return favoriteService.deleteProductFromFavorite(productId, userId);
 
     }
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<ViewProductDto> getSingleFavorite(@PathVariable(value = "productId")Long productId){
+        return favoriteService.fetchSingleFavoriteProduct(productId);
+    }
 
-    @GetMapping("/{userId}")
+    @GetMapping()
     public List<ViewProductDto> getAllFavorite(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
-    ){
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize){
 
         return favoriteService.fetchAllFavoriteProduct(pageNo,pageSize);
     }

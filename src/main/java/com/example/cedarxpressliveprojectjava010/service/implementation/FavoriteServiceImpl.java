@@ -11,6 +11,7 @@ import com.example.cedarxpressliveprojectjava010.repository.ProductRepository;
 import com.example.cedarxpressliveprojectjava010.repository.UserRepository;
 import com.example.cedarxpressliveprojectjava010.service.FavoriteService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final FavoriteRepository favoriteRepository;
-
+    private final ModelMapper mapper;
 
     @Override
     public ResponseEntity<String> addProductToFavorite(Long productId) {
@@ -73,17 +74,46 @@ public class FavoriteServiceImpl implements FavoriteService {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getUserByEmail(loggedInEmail);
 
-        favoriteRepository.findById(user.getId())
-                .orElseThrow(() -> new NotFoundException("your favorite is empty, add products to favorite"));
+        List<Favorite> favorite = favoriteRepository.findByUser(user);
+        if(favorite != null){
 
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Favorite> favoriteProducts = favoriteRepository.findFavoritesByUser(user, pageable);
-        List<Favorite> productList = favoriteProducts.getContent();
+            Pageable pageable = PageRequest.of(pageNo, pageSize);
+            Page<Favorite> favoriteProducts = favoriteRepository.findFavoritesByUser(user, pageable);
+            List<Favorite> productList = favoriteProducts.getContent();
 
-        return productList.stream().map(a -> ViewProductDto.builder()
-                .productName(a.getProduct().getProductName())
-                .description(a.getProduct().getDescription())
-                .price(a.getProduct().getPrice())
-                .build()).collect(Collectors.toList());
+            return productList.stream().map(a -> ViewProductDto.builder()
+                    .productName(a.getProduct().getProductName())
+                    .description(a.getProduct().getDescription())
+                    .price(a.getProduct().getPrice())
+                    .build()).collect(Collectors.toList());
+        }else{
+            return null;
+        }
+    }
+    @Override
+    public ResponseEntity<ViewProductDto> fetchSingleFavoriteProduct(Long productId){
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getUserByEmail(loggedInEmail);
+
+        List<Favorite> favorite = favoriteRepository.findByUser(user);
+        if(favorite != null){
+            Optional<Product> product = Optional.ofNullable(productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductNotFoundException(productId + " not available")));
+            Favorite favoriteProduct = favoriteRepository.findFavoritesByUserAndProduct(user, product.get());
+            if(favoriteProduct != null){
+                return new ResponseEntity<>(mapToDto(favoriteProduct), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    private ViewProductDto mapToDto(Favorite favorite){
+
+
+        return ViewProductDto.builder()
+                .productName(favorite.getProduct().getProductName())
+                .description(favorite.getProduct().getDescription())
+                .price(favorite.getProduct().getPrice())
+                .build();
     }
 }
