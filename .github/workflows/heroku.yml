@@ -66,8 +66,10 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
       - name: Build jar
         run: mvn -B clean install -DskipTests
+      - name: echo-repo
+      - run: echo "the repo name is  it's $REPO."
       - name: Build Docker image
-        run: docker build -t $REPO:${GITHUB_SHA::8} .
+        run: docker build -t $REPO:latest -t $REPO:${GITHUB_SHA::8} .
       - name: Publish Docker image
         run: docker push $REPO
   heroku:
