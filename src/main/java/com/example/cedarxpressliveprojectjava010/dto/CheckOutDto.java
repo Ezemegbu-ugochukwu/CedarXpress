@@ -12,7 +12,6 @@ import org.springframework.data.annotation.Transient;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckOutDto {
-    private Cart cart;
     private Long address_id;
     private String payment;
 

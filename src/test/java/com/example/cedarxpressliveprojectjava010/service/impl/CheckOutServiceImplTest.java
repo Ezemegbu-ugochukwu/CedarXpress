@@ -22,6 +22,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +42,7 @@ class CheckOutServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private AddressRepository addressRepository;
-    @Mock
+    @Mock private CartRepository cartRepository;
 
 
     Cart cart2;
@@ -84,12 +86,10 @@ class CheckOutServiceImplTest {
 
         checkOutDto = CheckOutDto.builder()
                 .address_id(1L)
-                .cart(cart)
                 .payment("CARD")
                 .build();
 
-        checkOutException = CheckOutDto.builder()
-                .cart(cart2).build();
+        checkOutException = CheckOutDto.builder().build();
         orderItem = OrderItem.builder()
                 .product(product)
                 .build();
@@ -121,6 +121,7 @@ class CheckOutServiceImplTest {
         SecurityContextHolder.setContext(securityContext);
         when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(user.getEmail());
         given(userRepository.getUserByEmail(user.getEmail())).willReturn(user);
+        given(cartRepository.findCartByCustomer(user)).willReturn(Optional.of(cart));
         given(addressRepository.getById(checkOutDto.getAddress_id())).willReturn(address);
         given(orderRepository.save(any())).willReturn(order);
 
@@ -138,8 +139,9 @@ class CheckOutServiceImplTest {
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(user.getEmail());
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(user2.getEmail());
         given(userRepository.getUserByEmail(user2.getEmail())).willReturn(user2);
+        given(cartRepository.findCartByCustomer(user2)).willReturn(Optional.of(cart2));
 
         assertThatThrownBy(() -> checkOutService.makeOrder(checkOutException)).isInstanceOf(CartEmptyException.class);
 

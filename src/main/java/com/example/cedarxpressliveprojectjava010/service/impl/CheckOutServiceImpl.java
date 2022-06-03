@@ -24,6 +24,7 @@ public class CheckOutServiceImpl implements CheckOutService {
     private OrderItemRepository orderItemRepository;
     private UserRepository userRepository;
     private AddressRepository addressRepository;
+    private CartRepository cartRepository;
 
 
 
@@ -31,7 +32,7 @@ public class CheckOutServiceImpl implements CheckOutService {
     public ResponseEntity<OrderDto> makeOrder(CheckOutDto checkOutDto) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getUserByEmail(loggedInEmail);
-        Cart cart = checkOutDto.getCart();
+        Cart cart = cartRepository.findCartByCustomer(user).get();
         if(cart.getCartItems().size() < 1) throw new CartEmptyException("Cart is Empty");
         Address address = addressRepository.getById(checkOutDto.getAddress_id());
 
@@ -49,7 +50,7 @@ public class CheckOutServiceImpl implements CheckOutService {
         order = orderRepository.save(order);
         List<OrderItem> orderItems = this.convertCartToOrderItemList(cart,order);
         order.setCustomerOrder(orderItems);
-        order.setPrice(checkOutDto.getCart().getCost());
+        order.setPrice(cart.getCost());
         OrderDto orderDto = this.mapToDto(orderRepository.save(order));
         return ResponseEntity.ok(orderDto);
 

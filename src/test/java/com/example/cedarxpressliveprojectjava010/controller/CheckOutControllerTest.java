@@ -73,7 +73,6 @@ class CheckOutControllerTest {
 
         checkOutDto = CheckOutDto.builder()
                 .address_id(1L)
-                .cart(cart)
                 .payment("CARD")
                 .build();
 
