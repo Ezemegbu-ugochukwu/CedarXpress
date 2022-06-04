@@ -44,7 +44,6 @@ class UserServiceIntegrationTest {
     private UserController userController;
     @MockBean
     private AddressService addressService;
-
     @Mock
     private UserServiceImpl userService;
 

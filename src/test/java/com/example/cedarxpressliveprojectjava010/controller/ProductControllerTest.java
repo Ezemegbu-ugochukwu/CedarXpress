@@ -14,7 +14,6 @@
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.ArgumentCaptor;
-//import org.mockito.Mockito;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -25,18 +24,11 @@
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.test.context.junit.jupiter.SpringExtension;
 //import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.MvcResult;
 //import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 //import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-//
 //import java.util.ArrayList;
 //import java.util.List;
-//
 //import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.mockito.ArgumentMatchers.anyInt;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 //
 //@ExtendWith(SpringExtension.class)
 //@AutoConfigureMockMvc
@@ -107,9 +99,6 @@
 //                .last(productPage.isLast())
 //                .build();
 //        productResponseEntity = ResponseEntity.ok(productResponse);
-//
-////        Mockito.when(productService.getAllProducts(anyInt(), anyInt())).thenReturn(productResponseEntity);
-//
 //    }
 //
 //    @Test
@@ -132,7 +121,6 @@
 //                andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 //
 //        ArgumentCaptor<Integer> integerArgumentCaptor = ArgumentCaptor.forClass(Integer.class);
-////        verify(productService, times(1)).getAllProducts(integerArgumentCaptor.capture(), integerArgumentCaptor.capture());
 //        assertEquals(integerArgumentCaptor.getValue(), 10);
 //    }
 //
