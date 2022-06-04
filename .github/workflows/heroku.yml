@@ -67,7 +67,7 @@ jobs:
       - name: Build jar
         run: mvn -B clean install  -DskipTests
       - name: Build Docker image
-        run: docker build -t ${{ github.event.repository.name }}:latest -t oselesley/${{ github.event.repository.name }}:${GITHUB_SHA::8} .
+        run: docker build -t oselesley/${{ github.event.repository.name }}:latest -t oselesley/${{ github.event.repository.name }}:${GITHUB_SHA::8} .
       - name: Publish Docker image
         run: docker push oselesley/${{ github.event.repository.name }}:latest; docker push oselesley/${{ github.event.repository.name }}:${GITHUB_SHA::8}
   heroku:
