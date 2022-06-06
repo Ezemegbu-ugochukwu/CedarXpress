@@ -34,4 +34,10 @@ public class OrderController {
     }
 
 
+    @GetMapping("/orders/{status}")
+    public List<OrderDto> fetchByStatus(@PathVariable("status") String stats){
+        return orderService.viewOrderByStatus(stats);
+    }
+
+
 }

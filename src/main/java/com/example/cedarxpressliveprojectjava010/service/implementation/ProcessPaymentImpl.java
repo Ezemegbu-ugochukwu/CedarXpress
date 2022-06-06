@@ -35,7 +35,8 @@ public class ProcessPaymentImpl implements ProcessPayment {
         Optional<User> findWalletOwner = userRepository.findUserByEmail(loggedInUserEmail);
         Optional<Wallet> wallet = walletRepository.findWalletByUserEmail(findWalletOwner.get().getEmail());
         BigDecimal totalAmount = processPaymentRequest.getAmount();
-        System.out.println(findWalletOwner);
+        
+      
         String message = "";
         if(wallet.isPresent()){
             if(wallet.get().getBalance().compareTo(totalAmount)==1){

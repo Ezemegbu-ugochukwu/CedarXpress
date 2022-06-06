@@ -7,5 +7,6 @@ import java.util.List;
 public interface OrderService {
     ResponseEntity<OrderDto> viewParticularUserOrder(long userId, long orderId);
     List<OrderDto> viewUserOrders(long userId);
+    List<OrderDto> viewOrderByStatus(String status);
 
 }
