@@ -6,17 +6,18 @@ import com.example.cedarxpressliveprojectjava010.service.AdminService;
 import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/api/admin/")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
     @Autowired
     private AdminService adminService;
     @Autowired
     private CloudinaryService cloudinaryService;
-
     @RequestMapping(value = "createProduct", method = RequestMethod.POST)
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product) {
         return adminService.createProduct(product);

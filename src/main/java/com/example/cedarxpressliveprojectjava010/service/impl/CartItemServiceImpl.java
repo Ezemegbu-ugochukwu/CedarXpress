@@ -1,5 +1,4 @@
 package com.example.cedarxpressliveprojectjava010.service.impl;
-
 import com.example.cedarxpressliveprojectjava010.dto.ProductDto;
 import com.example.cedarxpressliveprojectjava010.dto.request.AlterProductQuantityRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.CartItemDto;
@@ -26,19 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 @Transactional
 @AllArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
-
     private ProductRepository productRepository;
     private UserRepository userRepository;
     private CartRepository cartRepository;
     private CartItemRepository cartItemRepository;
     private ModelMapper modelMapper;
-
-
     @Override
     public ResponseEntity<Cart> addToCart(Long productId) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -52,13 +47,11 @@ public class CartItemServiceImpl implements CartItemService {
                     .unit(1)
                     .build();
             CartItem savedItem = cartItemRepository.save(cartItem);
-
             cart = Cart.builder()
                     .customer(user)
                     .cartItems(List.of(savedItem))
                     .build();
             cartRepository.save(cart);
-
         } else {
             cart = optionalCart.get();
             Optional<CartItem> optionalCartItem = cartItemRepository.findCartItemByCartAndProduct(cart, product);
@@ -78,12 +71,9 @@ public class CartItemServiceImpl implements CartItemService {
                 cart.setCartItems(cartItems);
                 cartRepository.save(cart);
             }
-
         }
         return ResponseEntity.ok(cart);
     }
-
-
     @Override
     public ResponseEntity<String> removeFromCart(Long productId, String userEmail) {
         User user = userRepository.findUserByEmail(userEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -93,7 +83,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
     @Override
     public ResponseEntity<String> clearCart(){
-       User user = getLoggedInUser();
+        User user = getLoggedInUser();
         Optional<Cart> optionalCart = cartRepository.findCartByCustomer(user);
         if (optionalCart.isEmpty()) {
             throw new CartNotFoundException("cart does not exist!!");
@@ -101,42 +91,36 @@ public class CartItemServiceImpl implements CartItemService {
         cartRepository.delete(optionalCart.get());
         return ResponseEntity.ok("User cart cleared");
     }
-
     @Override
     public ResponseEntity<CartItemDto> alterProductQuantity(AlterProductQuantityRequest request) {
         Long productId = request.getProductId();
         int unit = request.getQuantity();
         if (unit == 0) throw new IllegalArgumentException("Product quantity cant be zero");
         User user = getLoggedInUser();
-
         Cart cart = cartRepository.findCartByCustomer(user)
                 .orElseThrow(
-                () -> new CartNotFoundException("Cart not found for user with user-id" + user.getId()));
-
+                        () -> new CartNotFoundException("Cart not found for user with user-id" + user.getId()));
         CartItem cartItem = cartItemRepository.findCartItemByCartAndProductId(cart,productId)
                 .orElseThrow(
                         () -> new CartEmptyException(
                                 String.format("Product with id %d not found for user with id %d",
                                         productId, user.getId())));
-
         cartItem.setUnit(unit);
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
-
         ProductDto productDto = modelMapper.map(updatedCartItem.getProduct(), ProductDto.class);
         CartItemDto cartItemDto = CartItemDto.builder()
                 .productDto(productDto)
                 .unit(unit)
                 .build();
-
         return ResponseEntity.ok(cartItemDto);
     }
-
+    @Override
+    public ResponseEntity<String> deleteCartItem(Long cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
+        return ResponseEntity.ok("Cart Item deleted");
+    }
     private User getLoggedInUser(){
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return  userRepository.findUserByEmail(loggedInEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }
-
-
-
-

@@ -1,7 +1,6 @@
 package com.example.cedarxpressliveprojectjava010.service;
-
-import com.example.cedarxpressliveprojectjava010.entity.Cart;
-
+import com.example.cedarxpressliveprojectjava010.dto.frontEndDto.CartDto;
+import org.springframework.http.ResponseEntity;
 public interface CartService {
-    Cart findCartById (Long id);
+    ResponseEntity<CartDto> findCartByUser();
 }

@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,13 +28,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ViewProductDto> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword) {
+    public List<Product> fetchAllProducts(int pageNo, int pageSize, String sortBy, String keyword) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Product> products = productRepository.findAll(keyword, pageable);
         List<Product> productList = products.getContent();
 
-        return productList.stream().map(this::mapToDto).collect(Collectors.toList());
+        return productList;
+
+//        return productList.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     private ViewProductDto mapToDto(Product product){

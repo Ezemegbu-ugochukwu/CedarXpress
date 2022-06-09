@@ -7,6 +7,7 @@ import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.entity.User;
 import com.example.cedarxpressliveprojectjava010.enums.Gender;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
+import com.example.cedarxpressliveprojectjava010.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ class CartControllerTest {
     private CartController cartController;
     @MockBean
     private CartItemService cartItemService;
+    @MockBean
+    private CartService cartService;
     @MockBean
     private Authentication auth;
     @MockBean

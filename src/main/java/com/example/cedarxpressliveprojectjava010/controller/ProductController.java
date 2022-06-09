@@ -1,6 +1,7 @@
 package com.example.cedarxpressliveprojectjava010.controller;
 
 import com.example.cedarxpressliveprojectjava010.dto.ViewProductDto;
+import com.example.cedarxpressliveprojectjava010.entity.Product;
 import com.example.cedarxpressliveprojectjava010.service.CloudinaryService;
 import com.example.cedarxpressliveprojectjava010.service.ProductService;
 import com.example.cedarxpressliveprojectjava010.util.AppConstants;
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ViewProductDto> fetchAllProductByFilteringAndSorting(
+    public List<Product> fetchAllProductByFilteringAndSorting(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
