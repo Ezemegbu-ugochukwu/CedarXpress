@@ -47,11 +47,12 @@ public class LoginServiceImpl implements LoginService {
         return authenticatedToken;
     }
 
-    public void setUpJWT(Authentication authentication){
+    public String setUpJWT(Authentication authentication){
         log.info("Setting up JWT");
         String jwToken = jwtTokenProvider.generateToken(authentication);
         httpServletResponse.addHeader("Authorization", jwToken);
         log.info("JWT Created and stored in header");
+        return jwToken;
     }
 
     @Override

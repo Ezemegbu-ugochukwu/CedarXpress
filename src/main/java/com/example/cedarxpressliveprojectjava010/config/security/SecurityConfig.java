@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
         http
                 .csrf()
                 .disable()
@@ -55,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").hasAnyRole("ROLE_CUSTOMER","ADMIN")
                 .antMatchers("/", "cerderXpress/user/register",
 
-                        "/reset-password/**", "/login", "home", "/swagger-ui/**",
+                        "/reset-password/**", "/login", "home","/swagger-ui/**",
                         "/swagger-resources/**", "/swagger-ui/index.html#")
                 .permitAll()
                 .antMatchers("/products/**").permitAll()

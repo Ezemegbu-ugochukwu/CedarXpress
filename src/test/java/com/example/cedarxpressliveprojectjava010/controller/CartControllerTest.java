@@ -79,7 +79,7 @@ class CartControllerTest {
 
         given(cartItemService.addToCart((anyLong()))).willReturn(ResponseEntity.ok(cart));
         String content = (new ObjectMapper()).writeValueAsString(product);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/add/1")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/customer/carts/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -116,7 +116,7 @@ class CartControllerTest {
         when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("ugo@gmail.com");
         given(cartItemService.removeFromCart(anyLong(),eq("ugo@gmail.com"))).willReturn(ResponseEntity.ok("product successfully deleted"));
         String content = (new ObjectMapper()).writeValueAsString(product);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/remove/1")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/customer/carts/product/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
@@ -136,7 +136,7 @@ class CartControllerTest {
         AlterProductQuantityRequest request = new AlterProductQuantityRequest(1L, 5);
         String requestJSON = (new ObjectMapper()).writeValueAsString(request);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/alter")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/customer/carts/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJSON);
 

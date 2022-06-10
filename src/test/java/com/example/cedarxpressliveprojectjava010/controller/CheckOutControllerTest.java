@@ -104,7 +104,7 @@ class CheckOutControllerTest {
 
         given(checkOutService.makeOrder(checkOutDto)).willReturn(ResponseEntity.ok(orderDto));
         String content = (new ObjectMapper()).writeValueAsString(orderDto);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/checkout")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/customer/checkout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 

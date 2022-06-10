@@ -5,6 +5,6 @@ import org.springframework.security.core.Authentication;
 
 public interface LoginService {
     Authentication login(LoginDTO loginDTO);
-    void setUpJWT(Authentication authentication);
+    String setUpJWT(Authentication authentication);
     void logOut();
 }

@@ -84,7 +84,7 @@ class UserServiceIntegrationTest {
         when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(person);
         when(userRepository.findUserByEmail(person)).thenReturn(Optional.of(user));
         doNothing().when(userService).editUserDetails(any());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/cerderXpress/user/update/")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/users/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(userDto));
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.userController)

@@ -50,7 +50,7 @@ class OrderControllerTest {
 
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.orderController)
                 .build()
-                .perform(MockMvcRequestBuilders.get("/1/order/1"));
+                .perform(MockMvcRequestBuilders.get("/orders/1/1"));
         actualPerformResult.andExpect(status().is(200));
     }
 }

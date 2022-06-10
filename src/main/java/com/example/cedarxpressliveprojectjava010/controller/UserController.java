@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/cerderXpress/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -24,13 +24,12 @@ public class UserController {
     private final AddressService addressService;
 
 
-    @PostMapping("/register")
+    @PostMapping("/")
     public ResponseEntity<RegistrationDto> registerUser(@Valid @RequestBody RegistrationDto registrationDto){
         return userService.registerUser(registrationDto);
     }
 
-
-    @PutMapping("/update/")
+    @PutMapping("/")
     public ResponseEntity<String> editUserDetails(@RequestBody EditUserDetailsDto editUserDetailsDto){
         userService.editUserDetails(editUserDetailsDto);
         return new ResponseEntity<>(
@@ -43,7 +42,7 @@ public class UserController {
         return addressService.createAddress(addressDto);
     }
 
-    @PutMapping ("/update-password")
+    @PatchMapping ("/")
     public ResponseEntity<String> updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto){
         return userService.updatePassword(updatePasswordDto);
     }

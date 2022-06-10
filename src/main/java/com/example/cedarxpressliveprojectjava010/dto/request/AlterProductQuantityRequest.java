@@ -10,6 +10,6 @@ import javax.websocket.server.PathParam;
 @NoArgsConstructor
 @Builder
 public class AlterProductQuantityRequest {
-    private Long productId;
+    private Long cartItemId;
     private int quantity;
 }

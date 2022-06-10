@@ -274,55 +274,6 @@ class CartItemServiceImplTest {
         assertEquals(ans.getStatusCode(), HttpStatus.OK);
     }
 
-    @DisplayName("Test for successful altering of cart product quantity")
-    @Test
-    public void shouldReturnCartItemDtoWithAlteredValue() throws JsonProcessingException {
-        Cart cart = Cart.builder()
-                .cartItems(new ArrayList<CartItem>())
-                .customer(user)
-                .build();
-
-        Product product = Product.builder()
-                .productName("shoe")
-                .description("a black shoe")
-                .price(50.00)
-                .build();
-        ProductDto productDto = ProductDto.builder()
-                .productName("shoe")
-                .description("a black shoe")
-                .price(50.00)
-                .build();
-
-        CartItem cartItem = CartItem.builder()
-                .product(product)
-                .unit(1)
-                .build();
-        CartItem cartItem2 = CartItem.builder()
-                .product(product)
-                .unit(2)
-                .build();
-        CartItemDto cartItemDto = CartItemDto.builder()
-                .productDto(productDto)
-                .unit(2)
-                .build();
-
-        when(auth.getName()).thenReturn(user.getEmail());
-        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        when(cartRepository.findCartByCustomer(user)).thenReturn(Optional.of(cart));
-        when(cartItemRepository.findCartItemByCartAndProductId(cart, 1L)).thenReturn(Optional.of(cartItem));
-        when(cartItemRepository.save(cartItem)).thenReturn(cartItem2);
-        when(mapper.map(cartItem2.getProduct(), ProductDto.class)).thenReturn(productDto);
-
-        AlterProductQuantityRequest request = new AlterProductQuantityRequest(1L, 2);
-        ResponseEntity<CartItemDto> response = cartItemService.alterProductQuantity(request);
-
-        String expectedJSON = new ObjectMapper().writeValueAsString(cartItemDto);
-        String responseJSON = new ObjectMapper().writeValueAsString(response.getBody());
-
-        assertThat(responseJSON).isEqualTo(expectedJSON);
-
-
-    }
 
     @DisplayName("Test for setting cart item quantity to zero")
     @Test

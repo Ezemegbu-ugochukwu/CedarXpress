@@ -18,11 +18,11 @@ public class SignInController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
         Authentication auth = loginService.login(loginDTO);
-        loginService.setUpJWT(auth);
+        String jwt = loginService.setUpJWT(auth);
         loginDTO.setPassword(null);
-        return ResponseEntity.ok(loginDTO);
+        return ResponseEntity.ok(jwt);
     }
 
     @GetMapping("/log-out")

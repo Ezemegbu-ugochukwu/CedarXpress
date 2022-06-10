@@ -3,6 +3,7 @@ import com.example.cedarxpressliveprojectjava010.dto.frontEndDto.CartDto;
 import com.example.cedarxpressliveprojectjava010.dto.request.AlterProductQuantityRequest;
 import com.example.cedarxpressliveprojectjava010.dto.response.CartItemDto;
 import com.example.cedarxpressliveprojectjava010.entity.Cart;
+import com.example.cedarxpressliveprojectjava010.entity.CartItem;
 import com.example.cedarxpressliveprojectjava010.response.ApiResponse;
 import com.example.cedarxpressliveprojectjava010.service.CartItemService;
 import com.example.cedarxpressliveprojectjava010.service.CartService;
@@ -15,33 +16,41 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 @RestController
 @AllArgsConstructor
+@RequestMapping(path = "/customer/carts")
 @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+@CrossOrigin("*")
 public class CartController {
     private CartItemService cartItemService;
     private CartService cartService;
-    @PostMapping("/add/{productId}")
+
+    @PostMapping("/{productId}")
     public ResponseEntity<Cart> addToCart(@PathVariable Long productId) {
         return cartItemService.addToCart(productId);
     }
-    @DeleteMapping ("/remove/{productId}")
+
+
+    @DeleteMapping ("/product/{productId}")
     public ResponseEntity<?> removeFromCart(@PathVariable Long productId) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         cartItemService.removeFromCart(productId,loggedInEmail);
         return new ResponseEntity<>(new ApiResponse<>("product was successfully deleted"), HttpStatus.OK);
     }
-    @DeleteMapping ("/clearCart")
+
+    @DeleteMapping ("/")
     public ResponseEntity<?> clearCart() {
         return cartItemService.clearCart();
     }
-    @PutMapping("/alter")
-    public ResponseEntity<CartItemDto> alterProductQuantityInCart(@RequestBody AlterProductQuantityRequest request) {
+
+    @PutMapping("/")
+    public ResponseEntity<CartItem> alterProductQuantityInCart(@RequestBody AlterProductQuantityRequest request) {
         return cartItemService.alterProductQuantity(request);
     }
-    @GetMapping("/carts")
+    @GetMapping("/")
     public ResponseEntity<CartDto> getUserCart(){
         return cartService.findCartByUser();
     }
-    @DeleteMapping("/carts/{cartItemId}")
+
+    @DeleteMapping("/{cartItemId}")
     public ResponseEntity<String> deleteCartItem(@PathVariable("cartItemId") Long cartId){
         return cartItemService.deleteCartItem(cartId);
     }

@@ -47,7 +47,7 @@ class UserControllerINTTest {
     public void logInTest() throws Exception {
         given(userService.updatePassword(updatePasswordDto)).willReturn(new ResponseEntity<>("Password updated!", HttpStatus.ACCEPTED));
         String content = (new ObjectMapper()).writeValueAsString(updatePasswordDto);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/cerderXpress/user/update-password")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/users/")
                 .contentType(MediaType.APPLICATION_JSON).content(content);
 
        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.userController)

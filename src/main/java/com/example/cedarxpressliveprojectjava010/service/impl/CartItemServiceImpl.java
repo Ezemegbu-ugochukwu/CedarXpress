@@ -92,27 +92,14 @@ public class CartItemServiceImpl implements CartItemService {
         return ResponseEntity.ok("User cart cleared");
     }
     @Override
-    public ResponseEntity<CartItemDto> alterProductQuantity(AlterProductQuantityRequest request) {
-        Long productId = request.getProductId();
+    public ResponseEntity<CartItem> alterProductQuantity(AlterProductQuantityRequest request) {
+        Long cartItemId = request.getCartItemId();
         int unit = request.getQuantity();
         if (unit == 0) throw new IllegalArgumentException("Product quantity cant be zero");
-        User user = getLoggedInUser();
-        Cart cart = cartRepository.findCartByCustomer(user)
-                .orElseThrow(
-                        () -> new CartNotFoundException("Cart not found for user with user-id" + user.getId()));
-        CartItem cartItem = cartItemRepository.findCartItemByCartAndProductId(cart,productId)
-                .orElseThrow(
-                        () -> new CartEmptyException(
-                                String.format("Product with id %d not found for user with id %d",
-                                        productId, user.getId())));
+        CartItem cartItem = cartItemRepository.findById(cartItemId).get();
         cartItem.setUnit(unit);
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
-        ProductDto productDto = modelMapper.map(updatedCartItem.getProduct(), ProductDto.class);
-        CartItemDto cartItemDto = CartItemDto.builder()
-                .productDto(productDto)
-                .unit(unit)
-                .build();
-        return ResponseEntity.ok(cartItemDto);
+        return ResponseEntity.ok(updatedCartItem);
     }
     @Override
     public ResponseEntity<String> deleteCartItem(Long cartItemId) {
