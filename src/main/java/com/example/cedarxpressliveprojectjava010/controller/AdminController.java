@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
 public class AdminController {
@@ -19,7 +19,6 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private CloudinaryService cloudinaryService;
-
 
     @PostMapping("products")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto product) {

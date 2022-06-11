@@ -21,7 +21,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             Map uploadResult = cloudinaryInstance.uploader().upload(uploadedFile, com.cloudinary.utils.ObjectUtils.emptyMap());
             boolean isDeleted = uploadedFile.delete();
             if (isDeleted){
-                System.out.println("File successfully deleted");
+
             }else
                 System.out.println("File doesn't exist");
             return uploadResult.get("url").toString();

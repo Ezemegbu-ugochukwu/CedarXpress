@@ -12,6 +12,7 @@ import java.util.Stack;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SignInController {
 
     private final LoginService loginService;
@@ -19,6 +20,7 @@ public class SignInController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
+        System.out.println("Entered EMAIL :" + loginDTO.getEmail());
         Authentication auth = loginService.login(loginDTO);
         String jwt = loginService.setUpJWT(auth);
         loginDTO.setPassword(null);

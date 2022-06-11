@@ -26,6 +26,7 @@ public class CartServiceImpl implements CartService {
     public ResponseEntity<CartDto> findCartByUser() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = Optional.ofNullable(userRepository.getUserByEmail(loggedInEmail)).orElseThrow(() -> new UserNotFoundException("User not found"));
+
 //        User user = Optional.ofNullable(userRepository.getUserByEmail("general@gmail.com")).orElseThrow(() -> new UserNotFoundException("User not found"));
         Cart cart = cartRepository.findCartByCustomer(user).orElseThrow(()-> new CartNotFoundException("Cart Not Found"));
         CartDto cartDto = CartDto.builder()

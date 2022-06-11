@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
     private final CloudinaryService cloudinaryService;

@@ -17,6 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
 
 
